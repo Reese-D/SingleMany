@@ -11,7 +11,7 @@ public class Player {
 		amountOfPlayers++;
 		Id = amountOfPlayers;
 		money = 2000;
-		position = 0;
+		position = 0; //TODO position is square type, change this
 	}
 	
 	public double getMoney()
@@ -24,7 +24,7 @@ public class Player {
 	}
 	public void setPosition(int diceSum)
 	{
-		this.position = position + diceSum;
+		this.position = position + diceSum; //TODO can't add square object to integer
 	}
 	public void buyProperty(BasicSquare property)
 	{

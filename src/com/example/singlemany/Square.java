@@ -4,4 +4,5 @@ public abstract class Square {
 	protected int position;
 	protected static int typeId;
 	
-	public abstract void duAction(Player);
+	public abstract void duAction(Player player);
+}

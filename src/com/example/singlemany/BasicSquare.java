@@ -57,23 +57,20 @@ public class BasicSquare extends Square{
 			{
 			case 0:
 				return baseRent;
-				break;
 			case 1:
 				return baseRent * 1.8;
-				break;
 			case 2:
 				return baseRent * 2.5;
-				break;
 			case 3:
 				return baseRent * 3.6;
-				break;
 			case 4:
 				return baseRent *  5;
-				break;
 			}
-		}
-			else
+		}else{
 				return baseRent * 8.25;
+		}
+		//This statement shouldn't ever execute, but if it does you'll know something's wrong
+		return 10000000000.00;
 	}
 	
 	public int getHouses()
@@ -111,7 +108,7 @@ public class BasicSquare extends Square{
 	
 	
 	@Override
- 	public void duAction(Player) {
+ 	public void duAction(Player player) {
 		// TODO Auto-generated method stub
 		
 	}
