@@ -1,10 +1,12 @@
 package com.example.singlemany;
 
+import java.util.ArrayList;
+
 public class Player {
 	private int Id;
 	private Square position;
 	private static int amountOfPlayers = 0;
-	private BasicSquare[] properties;
+	private ArrayList properties = new ArrayList();
 	private double money;
 	
 	public Player(){
@@ -22,9 +24,20 @@ public class Player {
 	{
 		money = money + amount;
 	}
-	public void setPosition(int diceSum)
+	public int throwDice()
 	{
-		this.position = position + diceSum; //TODO can't add square object to integer
+		int value;
+		int diceValue1 = (int )(Math.random() * 6 + 1);
+		int diceValue2 = (int )(Math.random() * 6 + 1);
+		value = diceValue1 + diceValue2;
+		if(diceValue1 == diceValue2)
+		{
+			diceValue1 = (int )(Math.random() * 6 + 1);
+			diceValue2 = (int )(Math.random() * 6 + 1);
+			value = value + diceValue1 + diceValue2;
+		}
+		
+		return value;
 	}
 	public void buyProperty(BasicSquare property)
 	{
@@ -32,6 +45,7 @@ public class Player {
 		{
 			money = money - property.getPurchasePrice();
 			property.setOwner(this);
+			properties.add(property);
 		}
 	}
 	public void buyHouse(BasicSquare property)
@@ -50,6 +64,9 @@ public class Player {
 			property.buildHotel();
 		}
 	}
-
+	public int getId()
+	{
+		return Id;
+	}
 
 }

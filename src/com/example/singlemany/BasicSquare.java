@@ -2,7 +2,7 @@ package com.example.singlemany;
 
 public class BasicSquare extends Square{
 
-	private int monopoly, houses, purchasePrice;
+	private int monopoly, houses, purchasePrice, Id;
 	double housePrice, hotelPrice;
 	double baseRent; 
 	private Player owner;
