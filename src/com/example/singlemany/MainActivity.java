@@ -8,10 +8,13 @@ import android.view.MenuItem;
 
 public class MainActivity extends Activity {
 
+	DrawBoard gameBoard;
     
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        gameBoard = new DrawBoard(this);
+        //setContentView(R.layout.activity_main);
+        setContentView(gameBoard);
     }
 
 

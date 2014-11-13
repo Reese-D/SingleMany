@@ -13,7 +13,7 @@ public class Player {
 		amountOfPlayers++;
 		Id = amountOfPlayers;
 		money = 2000;
-		position = 0; //TODO position is square type, change this
+		//position = 0; //TODO position is square type, change this
 	}
 	
 	public double getMoney()

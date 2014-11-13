@@ -5,7 +5,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Rect;
+import android.graphics.RectF;
 import android.view.View;
 
 /**
@@ -18,7 +18,9 @@ public class DrawBoard extends View{
 	private int numSquares = 9;
 	private double squareHeight;
 	private double squareWidth;
-	public ArrayList<Rect> drawnSquares;
+	private double screenWidth;
+	private double screenHeight;
+	public ArrayList<RectF> drawnSquares = new ArrayList<RectF>();
 	
 	/** simple constructor
 	 * @param context
@@ -34,6 +36,15 @@ public class DrawBoard extends View{
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
 		
+		//TODO remove, this is just for testing...
+			ArrayList<Square> temp = new ArrayList<Square>();
+			int x = 0;
+			while(x < 40){
+				x++;
+				temp.add(new BasicSquare(10, 10));
+			}
+			setup(temp);
+		
 		//Must call to determine each squares size on device
 		setRelative(canvas);
 		
@@ -43,19 +54,21 @@ public class DrawBoard extends View{
 		Paint myColor = setColor(Color.BLUE);
 		
 		//draw all the squares for the board
-		for(Rect element : drawnSquares){
-			canvas.drawRect(element, myColor);
+		for(RectF element : drawnSquares){
+			myColor = setColor(Color.BLUE);
+			canvas.drawRoundRect(element, 25f, 25f, myColor);
+			myColor = setBorder(Color.BLACK);
+			canvas.drawRoundRect(element, 25f, 25f, myColor);
 		}
 	}
-	
 	
 	/**
 	 * Sets the size of each square relative to the screen size
 	 * @param canvas the canvas do draw to
 	 */
 	private void setRelative(Canvas canvas){
-		squareHeight = canvas.getHeight() / numSquares;
-		squareWidth = canvas.getWidth() / numSquares;
+		squareHeight = (screenHeight) / (numSquares + 1) - 1;
+		squareWidth = screenWidth / (numSquares + 1) - 1;
 	}
 	
 	/** Sets up the color for the squares
@@ -67,6 +80,20 @@ public class DrawBoard extends View{
 		Paint newColor = new Paint();
 		newColor.setColor(color);
 		newColor.setStyle(Paint.Style.FILL);
+		newColor.setAntiAlias(true);
+		return newColor;
+	}
+	
+	/** Sets up the color for the squares border
+	 * @param color the color of the desired border
+	 * @return a Paint object of the given color for border only
+	 */
+	private Paint setBorder(int color){
+		Paint newColor = new Paint();
+		newColor.setColor(color);
+		newColor.setStyle(Paint.Style.STROKE);
+		newColor.setStrokeWidth(2f);
+		newColor.setAntiAlias(true);
 		return newColor;
 	}
 	
@@ -75,24 +102,36 @@ public class DrawBoard extends View{
 	 * adds elements to drawnSquares ArrayList in the shape of a rectangle
 	 */
 	private void setUpArray(){
-		int tempIntLeft = 0;
-		int tempIntTop = 0;
-		int tempIntRight = (int) squareWidth;
-		int tempIntBottom = (int) squareHeight;;
+		float tempIntLeft = 0;
+		float tempIntTop = 0;
+		float tempIntRight = (float) squareWidth;
+		float tempIntBottom =  (float) squareHeight;
 		
 		for(int i = 0; i < SIDES; i++){
-			//move squares right when creating the top of the board
-			if(i == 0) tempIntLeft += squareWidth; tempIntRight += squareWidth;
-			//" " left " " " bottom " " " 
-			if(i == 2) tempIntLeft -= squareWidth; tempIntRight -= squareWidth;
 			for(int x = 0; x < numSquares; x++){
+				//move squares right when creating the top of the board
+				if(i == 0){
+					tempIntLeft += squareWidth + 1; 
+					tempIntRight += squareWidth + 1;
+				}
+				//" " left " " " bottom " " " 
+				if(i == 2){ 
+					tempIntLeft -= squareWidth + 1; 
+					tempIntRight -= squareWidth + 1;
+				}
 				//" " down " " " right " " " 
-				if(x == 1) tempIntTop += squareHeight; tempIntBottom += squareHeight;
+				if(i == 1){
+					tempIntTop += squareHeight + 1;
+					tempIntBottom += squareHeight + 1;
+				}
 				//" " up " " " left " " " 
-				if(x == 3) tempIntTop -= squareHeight; tempIntBottom -= squareHeight;
+				if(i == 3){ 
+					tempIntTop -= squareHeight + 1; 
+					tempIntBottom -= squareHeight + 1;
+				}
 				
 				//create and add each Rect in respective position
-				drawnSquares.add(new Rect(tempIntLeft, tempIntTop, tempIntRight, tempIntBottom));
+				drawnSquares.add(new RectF(tempIntLeft, tempIntTop, tempIntRight, tempIntBottom));
 			}
 		}
 	}
@@ -104,6 +143,16 @@ public class DrawBoard extends View{
 	public void setup(ArrayList<Square> squares){
 		numSquares = ((squares.size() / 4) - 1);
 	}
+	
+	/* (non-Javadoc)
+	 * @see android.view.View#onSizeChanged(int, int, int, int)
+	 */
+	@Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        screenWidth = w;
+        screenHeight = h;
+        super.onSizeChanged(w, h, oldw, oldh);
+    }
 
 
 	
