@@ -3,12 +3,13 @@ package com.example.singlemany;
 public class BasicSquare extends Square{
 
 	private int monopoly, houses, purchasePrice, Id;
+	private String name;
 	double housePrice, hotelPrice;
 	double baseRent; 
 	private Player owner;
 	private boolean hasHotel, hasMaxHouses, hasOwner;
 	
-	public BasicSquare(int monopoly, int purchasePrice)
+	public BasicSquare(int monopoly, int purchasePrice, String name)
 	{
 		this.monopoly = monopoly;
 		this.purchasePrice = purchasePrice;
@@ -19,7 +20,7 @@ public class BasicSquare extends Square{
 		hasMaxHouses = false;
 		hasOwner = false;
 		houses = 0;
-		
+		this.name = name;
 	}
 	
 	public void buildHouse()
@@ -109,7 +110,12 @@ public class BasicSquare extends Square{
 	
 	@Override
  	public void duAction(Player player) {
-		// TODO Auto-generated method stub
+		if(this.getHasOwner() == true && this.getOwner() != player)
+		{
+			double rent = this.getBaseRent();
+			owner.addMoney(rent);
+			player.payMoney(rent);
+		}
 		
 	}
 
