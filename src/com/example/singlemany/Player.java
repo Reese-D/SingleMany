@@ -2,6 +2,8 @@ package com.example.singlemany;
 
 import java.util.ArrayList;
 
+import android.graphics.Bitmap;
+
 public class Player {
 	private int Id;
 	private int positionInBoard;
@@ -10,14 +12,24 @@ public class Player {
 	private ArrayList properties = new ArrayList();
 	private double money;
 	private boolean hasThrownDice;
+	private Bitmap image;
 	
 	public Player(){
+		image = null;
 		amountOfPlayers++;
 		Id = amountOfPlayers;
 		money = 2000;
 		hasThrownDice = false;
 		positionInBoard = 0;
 		//position = 0; //TODO position is square type, change this
+	}
+	
+	public void setImage(Bitmap b){
+		image = b;
+	}
+	
+	public Bitmap getImage(){
+		return image;
 	}
 	
 	public double getMoney()

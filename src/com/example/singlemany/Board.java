@@ -11,17 +11,31 @@ import android.view.SurfaceView;
 public class Board extends SurfaceView implements SurfaceHolder.Callback {
 	private mThread thread;
     int mTextSize;
+    ArrayList<Player> players = null;
+    
     public Board(Context context, AttributeSet attributeSet) {
 		super(context, attributeSet);
 		SurfaceHolder holder = getHolder();
 		holder.addCallback(this);
         thread = new mThread(holder, context);
-
-
-       	
-       	//call setup
 	}
 
+    public void setPlayers(ArrayList<Player> p){
+    	players = p;
+    }
+    
+    /** Moves the player on the board, must first call setPlayers
+     * @param boardIndex integer position of player on board
+     * @param playerIndex integer position of player in array
+     * @throws Exception 
+     */
+    public void movePlayer(int boardIndex, int playerIndex) throws IllegalStateException{
+    	if(players == null){
+    		throw new IllegalStateException("setPlayers has not been called yet, you must" +
+    				"call setPlayers(ArrayList<Player> p) first");
+    	}
+    	thread.movePlayer(boardIndex, playerIndex);
+    }
 	public mThread getThread(){
 		return thread;
 	}

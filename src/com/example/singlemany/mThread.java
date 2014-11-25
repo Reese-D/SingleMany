@@ -102,7 +102,6 @@ public class mThread extends Thread{
 	
 	public void doDraw(Canvas c){
 		//c.drawARGB(255, 155, 55, 5);
-		//TODO draw stuff
 
 		Paint myColor = setColor(Color.BLUE);
 		for(Square element : drawnSquares){
@@ -120,6 +119,8 @@ public class mThread extends Thread{
 			//multiply the size of the text by 0.6 because text size given is in height and width of text
 			//is 3/5 of the texts height, then divide by 2 to center the text.
 			c.drawText(theText, (float) (theDrawable.centerX() - (theText.length() *(mTextSize * 0.6))/2), theDrawable.centerY(), myColor);
+			
+			
 		}
 	}
 	
@@ -178,6 +179,10 @@ public class mThread extends Thread{
 			}
 		}
 	}
+	
+    public void movePlayer(int boardIndex, int playerIndex){
+    	//TODO finish method
+    }
 	
 	public void setRunning(Boolean b){
 		running = b;

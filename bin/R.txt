@@ -237,6 +237,7 @@ int drawable abc_textfield_searchview_right_holo_dark 0x7f020055
 int drawable abc_textfield_searchview_right_holo_light 0x7f020056
 int drawable button 0x7f020057
 int drawable ic_launcher 0x7f020058
+int drawable red_car 0x7f020059
 int id Board 0x7f09003d
 int id Info 0x7f09003e
 int id Layout1 0x7f09003c

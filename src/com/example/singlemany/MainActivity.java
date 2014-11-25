@@ -1,7 +1,11 @@
 package com.example.singlemany;
 
 import android.app.Activity;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.media.Image;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,6 +16,7 @@ import android.widget.TextView;
 
 public class MainActivity extends Activity {
 
+	Bitmap b;
 	int textSize;
 	View gameBoard;
 	CharSequence c = "i am the char sequence";
@@ -21,7 +26,10 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        
+        //get resources
         textSize = getResources().getDimensionPixelSize(R.dimen.myFontSize);
+        b = BitmapFactory.decodeResource(getResources(), R.drawable.red_car);
         
         //gameBoard = new DrawBoard(this);
         gameBoard = (View) findViewById(R.id.Board);
@@ -32,6 +40,7 @@ public class MainActivity extends Activity {
     	information.setTextColor(Color.WHITE);
     }
 
+    
 
     
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -39,10 +48,12 @@ public class MainActivity extends Activity {
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
+    
     public void setText(String string, int color){
     	information.setTextColor(color);
      	information.setText(string);
     }
+    
     public void setText(String s){
      	information.setText(s);
     }
