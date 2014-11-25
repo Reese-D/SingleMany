@@ -1,13 +1,17 @@
 package com.example.singlemany;
 
+import android.graphics.Color;
+
 public class BasicSquare extends Square{
 
 	private int monopoly, houses, purchasePrice, Id;
-	private String name;
 	double housePrice, hotelPrice;
 	double baseRent; 
 	private Player owner;
 	private boolean hasHotel, hasMaxHouses, hasOwner;
+	
+
+	
 	
 	public BasicSquare(int monopoly, int purchasePrice, String name)
 	{
@@ -20,7 +24,13 @@ public class BasicSquare extends Square{
 		hasMaxHouses = false;
 		hasOwner = false;
 		houses = 0;
-		this.name = name;
+		super.setName(name);
+		
+		//set paint defaults
+		mPaint.setColor(Color.BLUE);
+		mPaint.setAntiAlias(true);
+		mPaint.setAlpha(255);
+		
 	}
 	
 	public void buildHouse()
