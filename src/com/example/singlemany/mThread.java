@@ -112,8 +112,14 @@ public class mThread extends Thread{
 			myColor = setBorder(Color.BLACK);
 			c.drawRoundRect(theDrawable, 25f, 25f, myColor);
 			String theText = ((BasicSquare) element).getName();
+			
+			//get text passed down from dimension -> Main -> Board -> here
 			myColor.setTextSize(mTextSize);
-			c.drawText(theText, theDrawable.centerX() - (theText.length() *20)/2, theDrawable.centerY(), myColor);
+			
+			//find text actual length by multiplying the number of characters times the size of the text
+			//multiply the size of the text by 0.6 because text size given is in height and width of text
+			//is 3/5 of the texts height, then divide by 2 to center the text.
+			c.drawText(theText, (float) (theDrawable.centerX() - (theText.length() *(mTextSize * 0.6))/2), theDrawable.centerY(), myColor);
 		}
 	}
 	
@@ -143,10 +149,7 @@ public class mThread extends Thread{
 		int counter = 1;
 		int counter2 = 0;
 		for(Square element : drawnSquares){
-			if(counter == numSquares){
-				counter = 1;
-				counter2++;
-			}
+
 			((BasicSquare) element).setRectF(new RectF(tempIntLeft, tempIntTop, tempIntRight, tempIntBottom));
 			
 			if(counter2 == 0){
@@ -169,6 +172,10 @@ public class mThread extends Thread{
 				tempIntBottom -= squareHeight + 1;
 			}
 			counter++;
+			if(counter == numSquares + 1){
+				counter = 1;
+				counter2++;
+			}
 		}
 	}
 	
