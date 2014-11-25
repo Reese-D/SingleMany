@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 public class MainActivity extends Activity {
 
+	int textSize;
 	View gameBoard;
 	CharSequence c = "i am the char sequence";
 	TextView information;
@@ -20,9 +21,11 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        textSize = getResources().getDimensionPixelSize(R.dimen.myFontSize);
         
         //gameBoard = new DrawBoard(this);
         gameBoard = (View) findViewById(R.id.Board);
+        ((Board) gameBoard).setTextSize(textSize);
         information = (TextView) findViewById(R.id.Info);
         
         //set white as default text color
