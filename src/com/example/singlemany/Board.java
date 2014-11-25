@@ -34,8 +34,16 @@ public class Board extends SurfaceView implements SurfaceHolder.Callback {
     		throw new IllegalStateException("setPlayers has not been called yet, you must" +
     				"call setPlayers(ArrayList<Player> p) first");
     	}
+    	try{
+    		if(players.get(playerIndex).getImage() == null){
+        		throw new IllegalStateException("Must set the players bitmap before moving him");
+        	}
+    	}catch(IndexOutOfBoundsException e){
+    		throw new IndexOutOfBoundsException("You called a player at an index that didn't exist");
+    	}
     	thread.movePlayer(boardIndex, playerIndex);
     }
+    
 	public mThread getThread(){
 		return thread;
 	}

@@ -1,5 +1,7 @@
 package com.example.singlemany;
 
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -16,7 +18,7 @@ import android.widget.TextView;
 
 public class MainActivity extends Activity {
 
-	Bitmap b;
+	ArrayList<Bitmap> playerBitmaps;
 	int textSize;
 	View gameBoard;
 	CharSequence c = "i am the char sequence";
@@ -29,7 +31,10 @@ public class MainActivity extends Activity {
         
         //get resources
         textSize = getResources().getDimensionPixelSize(R.dimen.myFontSize);
-        b = BitmapFactory.decodeResource(getResources(), R.drawable.red_car);
+        
+        //add the bitmaps to array
+        //TODO add more cars and add them to the list
+        playerBitmaps.add(BitmapFactory.decodeResource(getResources(), R.drawable.red_car));
         
         //gameBoard = new DrawBoard(this);
         gameBoard = (View) findViewById(R.id.Board);
@@ -40,7 +45,11 @@ public class MainActivity extends Activity {
     	information.setTextColor(Color.WHITE);
     }
 
-    
+    public void getPlayerBitmap(int index) throws IndexOutOfBoundsException{
+    	if(index > playerBitmaps.size() -1){
+    		throw new IndexOutOfBoundsException("There are no images at the specified index");
+    	}
+    }
 
     
     public boolean onCreateOptionsMenu(Menu menu) {
