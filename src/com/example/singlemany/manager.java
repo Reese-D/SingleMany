@@ -10,7 +10,8 @@ playerArray[1] = player2;*/
 
 Player currentPlayer;
 
-GoSquare square1;
+//GoSquare square1;
+Square square1; //TODO change to gosquare
 BasicSquare square2;
 Square square3;
 BasicSquare square4;
@@ -97,7 +98,8 @@ playerArray[1].setPostion(boardArray[0]);*/
 		currentPlayer = playerArray[0];
 		player1 = new Player();
 		player2 = new Player();
-		square1 = new GoSquare();
+		//square1 = new GoSquare();
+		square1 = new Square(); //TODO change to go square
 		playerArray[0] = player1;
 		playerArray[1] = player2;
 		boardArray = new Square[40];

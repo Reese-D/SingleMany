@@ -105,10 +105,10 @@ public class mThread extends Thread{
 				mCanvas = mSurfaceHolder.lockCanvas(null);
 				
 				//draw the surface if it's changed or on the start of program
-				if(surfaceChanged){
+				//if(surfaceChanged){
 					doDraw(mCanvas);
 					surfaceChanged = false;
-				}
+				//}
 				
 				//draw the players starting locations if they haven't been drawn yet
 				if(!playersInitialized){
@@ -144,7 +144,7 @@ public class mThread extends Thread{
 	private void movePlayers(){
 		for(Player cPlayer : players){
 			if(cPlayer.getPositionInBoard() != cPlayer.getMovingTo()){
-				//initialize square to move to
+				/*//initialize square to move to
 				RectF nextRectF;
 				
 				//get center of the image to be drawn
@@ -187,7 +187,7 @@ public class mThread extends Thread{
 		    	if(Math.abs(currentX - futureX)  <= Math.abs(cPlayer.velocity * framesPerSecond) &&
 		    			Math.abs(currentY - futureY)  <= Math.abs(cPlayer.velocity * framesPerSecond)){
 		    		cPlayer.SetPositionInBoard((cPlayer.getPositionInBoard() + 1 )% drawnSquares.size());
-		    	}
+		    	}*/
 			}
 		}
 	}
@@ -203,6 +203,9 @@ public class mThread extends Thread{
 			myColor = setBorder(Color.BLACK);
 			c.drawRoundRect(theDrawable, 25f, 25f, myColor);
 			String theText = ((BasicSquare) element).getName();
+			
+			((BasicSquare)element).setX(theDrawable.right - theDrawable.left);
+			((BasicSquare)element).setY(theDrawable.bottom - theDrawable.top);
 			
 			//get text passed down from dimension -> Main -> Board -> here
 			myColor.setTextSize(mTextSize);

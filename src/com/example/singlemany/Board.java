@@ -34,12 +34,6 @@ public class Board extends SurfaceView implements SurfaceHolder.Callback {
     	players = p;
     
         thread = new mThread(holder, mContext);
-		thread.setUp(squares, mCanvas.getWidth(), mCanvas.getHeight(), players);
-		
-		thread.setRunning(true);
-		thread.start();
-        thread.setTextSize(mTextSize);
-        
 
     }
     
@@ -66,8 +60,11 @@ public class Board extends SurfaceView implements SurfaceHolder.Callback {
 	@Override
 	public void surfaceCreated(SurfaceHolder holder) {
         mCanvas = holder.lockCanvas();
-
+		thread.setUp(squares, mCanvas.getWidth(), mCanvas.getHeight(), players);
 		holder.unlockCanvasAndPost(mCanvas);
+		thread.setRunning(true);
+		thread.start();
+        thread.setTextSize(mTextSize);
 	}
 
 	@Override

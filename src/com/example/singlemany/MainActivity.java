@@ -38,7 +38,6 @@ public class MainActivity extends Activity {
         //add the bitmaps to array
         	//TODO add more cars and add them to the list
         playerBitmaps.add(BitmapFactory.decodeResource(getResources(), R.drawable.red_car));
-        
 
         //set some defaults
         ((Board) gameBoard).setTextSize(textSize);
@@ -46,8 +45,10 @@ public class MainActivity extends Activity {
     	
     	//TODO create a method to get players from manager class and pass it down, then delete this
     	ArrayList<Player> temp = new ArrayList<Player>();
-    	temp.add(new Player());
     	
+    	Player p = new Player();
+    	p.setImage(BitmapFactory.decodeResource(getResources(), R.drawable.red_car));
+    	temp.add(p);
     	//Temporary, we'll need a list later, TODO put this in a setup() method.
     	((Board) gameBoard).setupBoard(temp, null);
     }
