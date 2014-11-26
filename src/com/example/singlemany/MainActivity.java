@@ -31,18 +31,25 @@ public class MainActivity extends Activity {
         
         //get resources
         textSize = getResources().getDimensionPixelSize(R.dimen.myFontSize);
+        playerBitmaps = new ArrayList<Bitmap>();
+        information = (TextView) findViewById(R.id.Info);
+        gameBoard = (View) findViewById(R.id.Board);
         
         //add the bitmaps to array
-        //TODO add more cars and add them to the list
+        	//TODO add more cars and add them to the list
         playerBitmaps.add(BitmapFactory.decodeResource(getResources(), R.drawable.red_car));
         
-        //gameBoard = new DrawBoard(this);
-        gameBoard = (View) findViewById(R.id.Board);
+
+        //set some defaults
         ((Board) gameBoard).setTextSize(textSize);
-        information = (TextView) findViewById(R.id.Info);
-        
-        //set white as default text color
     	information.setTextColor(Color.WHITE);
+    	
+    	//TODO create a method to get players from manager class and pass it down, then delete this
+    	ArrayList<Player> temp = new ArrayList<Player>();
+    	temp.add(new Player());
+    	
+    	//Temporary, we'll need a list later, TODO put this in a setup() method.
+    	((Board) gameBoard).setupBoard(temp, null);
     }
 
     public void getPlayerBitmap(int index) throws IndexOutOfBoundsException{

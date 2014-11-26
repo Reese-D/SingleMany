@@ -12,21 +12,35 @@ public class Board extends SurfaceView implements SurfaceHolder.Callback {
 	private mThread thread;
     int mTextSize;
     ArrayList<Player> players = null;
-    ArrayList<Square> list;
+    ArrayList<Square> squares;
+    SurfaceHolder holder;
+    Context mContext;
+    Canvas mCanvas;
     
     public Board(Context context, AttributeSet attributeSet) {
 		super(context, attributeSet);
-		SurfaceHolder holder = getHolder();
+		holder = getHolder();
 		holder.addCallback(this);
-        thread = new mThread(holder, context);
-	}
+		mContext = context;
 
-    public void setPlayers(ArrayList<Player> p){
-    	players = p;
-    }
+	}
     
-    public void setBoard(ArrayList<Square> s){
-    	list = s;
+    public void setupBoard(ArrayList<Player> p, ArrayList<Square> list){
+        //TODO remove, this is just for testing and un-comment this.squares = list;
+    	squares = new ArrayList<Square>();
+    	for(int x = 0; x < 40; x++)
+    		squares.add(new BasicSquare(10, 10, "testName"));
+    	/*this.squares = list;*/
+    	players = p;
+    
+        thread = new mThread(holder, mContext);
+		thread.setUp(squares, mCanvas.getWidth(), mCanvas.getHeight(), players);
+		
+		thread.setRunning(true);
+		thread.start();
+        thread.setTextSize(mTextSize);
+        
+
     }
     
     /** Moves the player on the board, must first call setPlayers
@@ -51,17 +65,9 @@ public class Board extends SurfaceView implements SurfaceHolder.Callback {
 
 	@Override
 	public void surfaceCreated(SurfaceHolder holder) {
-		thread.setRunning(true);
-		thread.start();
-        thread.setTextSize(mTextSize);
-		
-        Canvas mCanvas = holder.lockCanvas();
-		//TODO remove, just for testing
-    	list = new ArrayList<Square>();
-    	for(int x = 0; x < 40; x++)
-    		list.add(new BasicSquare(10, 10, "testName"));
-       	thread.setUp(list, mCanvas.getWidth(), mCanvas.getHeight(), players);
-       	holder.unlockCanvasAndPost(mCanvas);
+        mCanvas = holder.lockCanvas();
+
+		holder.unlockCanvasAndPost(mCanvas);
 	}
 
 	@Override

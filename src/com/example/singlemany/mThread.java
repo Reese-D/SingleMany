@@ -60,7 +60,6 @@ public class mThread extends Thread{
 	
 	
 	public mThread(SurfaceHolder surfaceHolder, Context context) {
-		
 		//copy constructor inputs for later use
 		mSurfaceHolder = surfaceHolder;
 		mContext = context;
@@ -74,8 +73,9 @@ public class mThread extends Thread{
 	
 	public void setUp(ArrayList<Square> list, int canvasWidth, int canvasHeight, ArrayList<Player> players){
 		
-		//initialize squares
+		//initialize arrays
 		drawnSquares = list;
+		this.players = players;
 		
 		//find the number of squares on each side of the board
 		numSquares = ((list.size() / 4) - 1);
@@ -85,7 +85,7 @@ public class mThread extends Thread{
 		//set up an array of (numSquares) draw able rectangles to be displayed
 		setUpArray();
 		
-		this.players = players;
+
 	}
 
 	@Override
@@ -114,7 +114,7 @@ public class mThread extends Thread{
 				if(!playersInitialized){
 					intializePlayers(mCanvas);
 				}else{
-					movePlayers();
+					//movePlayers();
 				}
 			}finally{
 				if(mCanvas != null){
@@ -125,6 +125,7 @@ public class mThread extends Thread{
 	}
 	
 	private void intializePlayers(Canvas c){
+
 		for(Player cPlayer : players){
 			//get the players current position in board and get the top left corner of that rectangle
 	    	float centerX = ((BasicSquare) drawnSquares.get(cPlayer.getPositionInBoard())).getRectF().centerY();
@@ -154,12 +155,9 @@ public class mThread extends Thread{
 				currentX = cPlayer.getxActual();
 				currentY = cPlayer.getyActual();
 				
-				//find and instantiate the next square
-				if(cPlayer.getPositionInBoard() + 1 == drawnSquares.size()){
-					nextRectF = drawnSquares.get(0).getRectF();
-				}else{
-					nextRectF = drawnSquares.get(cPlayer.getPositionInBoard() + 1).getRectF();
-				}
+				//find and instantiate the next square, wrap around if at the end of the boards
+				nextRectF = drawnSquares.get((cPlayer.getPositionInBoard() + 1) % drawnSquares.size()).getRectF();
+
 				
 				//find the center of the next square
 				futureX = nextRectF.centerX();
@@ -179,15 +177,15 @@ public class mThread extends Thread{
 		    	//okay we finally have the angle, now we'll use the players speed and our frames per second to find
 		    	//a vector between where we are and a point part-way between us and our goal
 		    	currentX = (float) (currentX + Math.cos(angle) * (cPlayer.velocity * framesPerSecond));
-		    	currentY = (float) (currentY - Math.sin(angle) * (cPlayer.velocity * framesPerSecond));    // minus on the Sin
+		    	currentY = (float) (currentY - Math.sin(angle) * (cPlayer.velocity * framesPerSecond));    // minus on the sin because +, + is bottom right not top right
 		    	
 		    	//set new currentXY then draw it
 		    	cPlayer.setxyActual(currentX, currentY);
 		    	mCanvas.drawBitmap(cPlayer.getImage(), currentX, currentY, null);
 		    	
 		    	//if we're within one frame of our destination set it as our new current position
-		    	if(Math.abs(currentX - futureX)  < Math.abs(cPlayer.velocity * framesPerSecond) &&
-		    			Math.abs(currentY - futureY)  < Math.abs(cPlayer.velocity * framesPerSecond)){
+		    	if(Math.abs(currentX - futureX)  <= Math.abs(cPlayer.velocity * framesPerSecond) &&
+		    			Math.abs(currentY - futureY)  <= Math.abs(cPlayer.velocity * framesPerSecond)){
 		    		cPlayer.SetPositionInBoard((cPlayer.getPositionInBoard() + 1 )% drawnSquares.size());
 		    	}
 			}
