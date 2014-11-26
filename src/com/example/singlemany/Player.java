@@ -2,24 +2,61 @@ package com.example.singlemany;
 
 import java.util.ArrayList;
 
+import android.graphics.Bitmap;
+
 public class Player {
+	public final int velocity = 100;
 	private int Id;
 	private int positionInBoard;
+	private int movingToPosition;
 	private Square position;
 	public static int amountOfPlayers = 0;
 	private ArrayList<BasicSquare> properties = new ArrayList();
 	private double money;
 	private boolean hasThrownDice;
+	private Bitmap image;
+	private float xActual, yActual;
 	
 	public Player(){
+		image = null;
 		amountOfPlayers++;
 		Id = amountOfPlayers;
 		money = 2000;
 		hasThrownDice = false;
 		positionInBoard = 0;
+		movingToPosition = 0;
 		//position = 0; //TODO position is square type, change this
 	}
 	
+<<<<<<< HEAD
+=======
+	public float getxActual(){
+		return xActual;
+	}
+	public float getyActual(){
+		return yActual;
+	}
+	public void setxyActual(float left, float top){
+		xActual = left;
+		yActual = top;
+	}
+	
+	public void setMovingTo(int i){
+		movingToPosition = i;
+	}
+	
+	public int getMovingTo(){
+		return movingToPosition;
+	}
+	
+	public void setImage(Bitmap b){
+		image = b;
+	}
+	
+	public Bitmap getImage(){
+		return image;
+	}
+>>>>>>> d56aa13727556366128caccb980ace45d91c5b20
 	
 	public double getMoney()
 	{
