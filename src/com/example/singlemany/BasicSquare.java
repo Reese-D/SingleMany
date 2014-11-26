@@ -25,6 +25,7 @@ public class BasicSquare extends Square{
 		hasOwner = false;
 		houses = 0;
 		super.setName(name);
+		super.typeId = 1;
 		
 		//set paint defaults
 		mPaint.setColor(Color.BLUE);

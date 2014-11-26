@@ -98,8 +98,12 @@ playerArray[1].setPostion(boardArray[0]);*/
 		currentPlayer = playerArray[0];
 		player1 = new Player();
 		player2 = new Player();
+<<<<<<< HEAD
 		//square1 = new GoSquare();
 		square1 = new Square(); //TODO change to go square
+=======
+		GoSquare square1 = new GoSquare();
+>>>>>>> 3f937c4419100abe03a4e3621b311f1d831e7a24
 		playerArray[0] = player1;
 		playerArray[1] = player2;
 		boardArray = new Square[40];
@@ -204,8 +208,17 @@ playerArray[1].setPostion(boardArray[0]);*/
 		currentPlayer.setPosition(boardArray[currentPlayer.getPositionInBoard()]);
 		currentPlayer.setHasThrownDice(true);
 		currentPlayer.getPosition().duAction(currentPlayer);
+		
 		}
 		
+	}
+	
+	public void Buy()
+	{
+		if(currentPlayer.getPosition().typeId == 1)
+			currentPlayer.buyProperty((BasicSquare)currentPlayer.getPosition());
+			currentPlayer.buyHouse((BasicSquare)currentPlayer.getPosition());
+			currentPlayer.buyHotel((BasicSquare)currentPlayer.getPosition());
 	}
 	
 	//To be called when player clicks End turn button
