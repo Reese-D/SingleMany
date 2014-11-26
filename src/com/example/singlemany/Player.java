@@ -5,14 +5,17 @@ import java.util.ArrayList;
 import android.graphics.Bitmap;
 
 public class Player {
+	public final int velocity = 100;
 	private int Id;
 	private int positionInBoard;
+	private int movingToPosition;
 	private Square position;
 	private static int amountOfPlayers = 0;
 	private ArrayList properties = new ArrayList();
 	private double money;
 	private boolean hasThrownDice;
 	private Bitmap image;
+	private float xActual, yActual;
 	
 	public Player(){
 		image = null;
@@ -21,7 +24,27 @@ public class Player {
 		money = 2000;
 		hasThrownDice = false;
 		positionInBoard = 0;
+		movingToPosition = 0;
 		//position = 0; //TODO position is square type, change this
+	}
+	
+	public float getxActual(){
+		return xActual;
+	}
+	public float getyActual(){
+		return yActual;
+	}
+	public void setxyActual(float left, float top){
+		xActual = left;
+		yActual = top;
+	}
+	
+	public void setMovingTo(int i){
+		movingToPosition = i;
+	}
+	
+	public int getMovingTo(){
+		return movingToPosition;
 	}
 	
 	public void setImage(Bitmap b){

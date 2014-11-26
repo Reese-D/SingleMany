@@ -9,6 +9,7 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.webkit.WebView.FindListener;
 
@@ -18,6 +19,8 @@ public class mThread extends Thread{
 	Handler mHandler;
 	Paint mPaint;
 	int mTextSize;
+	Canvas mCanvas = null;
+	boolean surfaceChanged = true;
 	
 	//get view dimensions
 	int surfaceWidth, surfaceHeight;
@@ -30,7 +33,9 @@ public class mThread extends Thread{
 	int numSquares;
 	
 	boolean screenChanged = false;
-	double positionX, positionY;
+	
+	//set up currentPlayer properties
+	float currentX, currentY, futureX, futureY;
 	
 	//get timers for velocity and fps
 	double framesPerSecond = 0;
@@ -45,8 +50,12 @@ public class mThread extends Thread{
 	private int squareWidth;
 	final private int SIDES = 4;
 	
+	ArrayList<Player> players;
+	boolean playersInitialized = false;
+	
 	//setup a list of all the Squares
 	ArrayList<Square> drawnSquares;
+	private String TAG = "1";
 	
 	
 	
@@ -63,7 +72,7 @@ public class mThread extends Thread{
 		mTextSize = t;
 	}
 	
-	public void setUp(ArrayList<Square> list, int canvasWidth, int canvasHeight){
+	public void setUp(ArrayList<Square> list, int canvasWidth, int canvasHeight, ArrayList<Player> players){
 		
 		//initialize squares
 		drawnSquares = list;
@@ -72,17 +81,19 @@ public class mThread extends Thread{
 		numSquares = ((list.size() / 4) - 1);
 		squareHeight = canvasHeight / (numSquares + 1) - 1;
 		squareWidth = canvasWidth / (numSquares + 1) - 1;
+		
 		//set up an array of (numSquares) draw able rectangles to be displayed
 		setUpArray();
+		
+		this.players = players;
 	}
 
 	@Override
 	public void run(){
 		super.run();
-		Canvas mCanvas = null;
 		while(running){
 			currentTime = SystemClock.elapsedRealtime();
-			framesPerSecond = (1.0/(oldTime - currentTime));
+			framesPerSecond = (1.0/(currentTime - oldTime));
 			oldTime = SystemClock.elapsedRealtime();
 			try{
 				//if we draw before this we'll try drawing from drawnSquares which is empty
@@ -90,8 +101,21 @@ public class mThread extends Thread{
 					continue;*/
 				if(!mSurfaceHolder.getSurface().isValid())
 					continue;
+
 				mCanvas = mSurfaceHolder.lockCanvas(null);
-				doDraw(mCanvas);
+				
+				//draw the surface if it's changed or on the start of program
+				if(surfaceChanged){
+					doDraw(mCanvas);
+					surfaceChanged = false;
+				}
+				
+				//draw the players starting locations if they haven't been drawn yet
+				if(!playersInitialized){
+					intializePlayers(mCanvas);
+				}else{
+					movePlayers();
+				}
 			}finally{
 				if(mCanvas != null){
 					mSurfaceHolder.unlockCanvasAndPost(mCanvas);
@@ -100,7 +124,77 @@ public class mThread extends Thread{
 		}
 	}
 	
-	public void doDraw(Canvas c){
+	private void intializePlayers(Canvas c){
+		for(Player cPlayer : players){
+			//get the players current position in board and get the top left corner of that rectangle
+	    	float centerX = ((BasicSquare) drawnSquares.get(cPlayer.getPositionInBoard())).getRectF().centerY();
+	    	float centerY = ((BasicSquare) drawnSquares.get(cPlayer.getPositionInBoard())).getRectF().centerX();
+	    	float imageHeight = cPlayer.getImage().getHeight()/2;
+	    	float imageWidth = cPlayer.getImage().getWidth()/2;
+	    	float left = centerX - imageWidth;
+	    	float top = centerY - imageHeight;
+			mCanvas.drawBitmap(cPlayer.getImage(), left, top, null);
+			
+			//set x,y actual or they will be uninitialized and movement won't work
+			cPlayer.setxyActual(left, top);
+		}
+	}
+	
+	private void movePlayers(){
+		for(Player cPlayer : players){
+			if(cPlayer.getPositionInBoard() != cPlayer.getMovingTo()){
+				//initialize square to move to
+				RectF nextRectF;
+				
+				//get center of the image to be drawn
+		    	float imageHeight = cPlayer.getImage().getHeight()/2;
+		    	float imageWidth = cPlayer.getImage().getWidth()/2;
+		    	
+		    	//find the center of the current square
+				currentX = cPlayer.getxActual();
+				currentY = cPlayer.getyActual();
+				
+				//find and instantiate the next square
+				if(cPlayer.getPositionInBoard() + 1 == drawnSquares.size()){
+					nextRectF = drawnSquares.get(0).getRectF();
+				}else{
+					nextRectF = drawnSquares.get(cPlayer.getPositionInBoard() + 1).getRectF();
+				}
+				
+				//find the center of the next square
+				futureX = nextRectF.centerX();
+				futureY = nextRectF.centerY();
+				
+				//find the corner of the image when it's centered over the square
+				futureX = futureX - imageWidth;
+				futureY = futureY - imageHeight;
+		    	
+		    	//find the delta of the 2 points
+		    	float delta_x = futureX - currentX;
+		    	float delta_y = futureY - currentY;
+		    	
+		    	//calculate the angle
+		    	double angle = Math.atan2(delta_y, delta_x);
+		    	
+		    	//okay we finally have the angle, now we'll use the players speed and our frames per second to find
+		    	//a vector between where we are and a point part-way between us and our goal
+		    	currentX = (float) (currentX + Math.cos(angle) * (cPlayer.velocity * framesPerSecond));
+		    	currentY = (float) (currentY - Math.sin(angle) * (cPlayer.velocity * framesPerSecond));    // minus on the Sin
+		    	
+		    	//set new currentXY then draw it
+		    	cPlayer.setxyActual(currentX, currentY);
+		    	mCanvas.drawBitmap(cPlayer.getImage(), currentX, currentY, null);
+		    	
+		    	//if we're within one frame of our destination set it as our new current position
+		    	if(Math.abs(currentX - futureX)  < Math.abs(cPlayer.velocity * framesPerSecond) &&
+		    			Math.abs(currentY - futureY)  < Math.abs(cPlayer.velocity * framesPerSecond)){
+		    		cPlayer.SetPositionInBoard((cPlayer.getPositionInBoard() + 1 )% drawnSquares.size());
+		    	}
+			}
+		}
+	}
+	
+	private void doDraw(Canvas c){
 		//c.drawARGB(255, 155, 55, 5);
 
 		Paint myColor = setColor(Color.BLUE);
@@ -119,7 +213,7 @@ public class mThread extends Thread{
 			//multiply the size of the text by 0.6 because text size given is in height and width of text
 			//is 3/5 of the texts height, then divide by 2 to center the text.
 			c.drawText(theText, (float) (theDrawable.centerX() - (theText.length() *(mTextSize * 0.6))/2), theDrawable.centerY(), myColor);
-			
+
 			
 		}
 	}
@@ -180,8 +274,12 @@ public class mThread extends Thread{
 		}
 	}
 	
-    public void movePlayer(int boardIndex, int playerIndex){
-    	//TODO finish method
+    /** Moves a given player to specified location
+     * @param boardIndex index the player wants to move to
+     * @param p Player instance that should move
+     */
+    public void movePlayer(int boardIndex, Player p){
+    	p.setMovingTo(boardIndex);
     }
 	
 	public void setRunning(Boolean b){
