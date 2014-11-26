@@ -28,8 +28,6 @@ public class Player {
 		//position = 0; //TODO position is square type, change this
 	}
 	
-<<<<<<< HEAD
-=======
 	public float getxActual(){
 		return xActual;
 	}
@@ -56,7 +54,6 @@ public class Player {
 	public Bitmap getImage(){
 		return image;
 	}
->>>>>>> d56aa13727556366128caccb980ace45d91c5b20
 	
 	public double getMoney()
 	{
