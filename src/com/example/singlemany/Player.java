@@ -6,8 +6,8 @@ public class Player {
 	private int Id;
 	private int positionInBoard;
 	private Square position;
-	private static int amountOfPlayers = 0;
-	private ArrayList properties = new ArrayList();
+	public static int amountOfPlayers = 0;
+	private ArrayList<BasicSquare> properties = new ArrayList();
 	private double money;
 	private boolean hasThrownDice;
 	
@@ -19,6 +19,7 @@ public class Player {
 		positionInBoard = 0;
 		//position = 0; //TODO position is square type, change this
 	}
+	
 	
 	public double getMoney()
 	{
@@ -90,7 +91,7 @@ public class Player {
 		position = square;
 	}
 	
-	public ArrayList<Square> getProperties()
+	public ArrayList<BasicSquare> getProperties()
 	{
 		return properties;
 	}

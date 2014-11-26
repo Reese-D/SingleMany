@@ -2,11 +2,11 @@ package com.example.singlemany;
 
 public class manager {
 
-Square[] boardArray;
-Player[] playerArray;	
-
+Square[] boardArray = new Square[40];
+	
 Player player1 = new Player();
 Player player2 = new Player();
+Player[] playerArray = new Player[2];
 
 playerArray[0] = player1;
 playerArray[1] = player2;
