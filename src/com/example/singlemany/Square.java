@@ -6,7 +6,9 @@ import android.graphics.RectF;
 public class Square {
 	protected String name;
 	protected static int position;
-	protected static int typeId;
+	protected int typeId;
+	protected float x;
+	protected float y;
 	//Add some variables to comply with mThread class
 	protected Paint mPaint = new Paint();
 	protected RectF mRectF = new RectF();
@@ -14,6 +16,20 @@ public class Square {
 	{
 		
 	}
+	
+	public void setX(float amount){ 
+		x = amount;
+	}
+	public void setY(float amount){ 
+		y = amount;
+	}
+	public float getX(){
+		return x;
+	}
+	public float getY(){
+		return y;
+	}
+	
 	
 	public Paint getPaint() {
 		return mPaint;
