@@ -78,7 +78,7 @@ public class mThread extends Thread{
 		this.players = players;
 		
 		//find the number of squares on each side of the board
-		numSquares = ((list.size() / 4) - 1);
+		numSquares = ((list.size() / 4));
 		squareHeight = canvasHeight / (numSquares + 1) - 1;
 		squareWidth = canvasWidth / (numSquares + 1) - 1;
 		

@@ -2,20 +2,21 @@ package com.example.singlemany;
 
 import java.util.ArrayList;
 
+import android.animation.ObjectAnimator;
 import android.app.Activity;
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.media.Image;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.animation.RotateAnimation;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -33,9 +34,11 @@ public class MainActivity extends Activity {
 	TextView information;
 	String s;
 	ImageView iv;
-	Thread animationHandler;
 	int imageWidth, imageHeight;
 	final int IMAGESCALE = 15;
+	final int MOVETIME = 500;
+	int rolled, currentPosition;
+	Player currentPlayer;
 	
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,13 +51,12 @@ public class MainActivity extends Activity {
         information = (TextView) findViewById(R.id.Info);
         gameBoard = (View) findViewById(R.id.Board);
         Button roll = (Button) findViewById(R.id.roll_button);
-        
-        animationHandler = new Thread();
+
         
         //TODO remove
     	squares = new ArrayList<Square>();
     	for(int x = 0; x < 40; x++)
-    		squares.add(new BasicSquare(10, 10, "testName"));
+    		squares.add(new BasicSquare(10, 10, "test\nNameof Square"));
         
        
         
@@ -78,12 +80,9 @@ public class MainActivity extends Activity {
     	 //set roll listener
         roll.setOnClickListener(setButtonListener());
         
-        final ImageView red_car = (ImageView)findViewById(R.drawable.red_car);
         
         //set up simple animation
         iv = (ImageView) findViewById(R.id.imageView1);
-        int xVal = 1;
-        int yVal = 1;
         iv.setImageResource(R.drawable.red_car);
         
         //find screen width and height to set car size
@@ -118,19 +117,64 @@ public class MainActivity extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-				Player player= players.get(0);
-				int rolled = player.throwDice();
-				int currentPos = player.getPositionInBoard();
-				player.SetPositionInBoard((currentPos + rolled) % 40);
-				currentPos = player.getPositionInBoard();
-				Square currentSquare = squares.get(currentPos);
-				iv.animate().translationX(currentSquare.getX() - (imageWidth/2));
-				iv.animate().translationY(currentSquare.getY() - (imageHeight/2));
-				iv.animate().setDuration(1000*rolled);
-				iv.animate().start();
+				currentPlayer= players.get(0);
+				rolled = currentPlayer.throwDice();
+				currentPosition = currentPlayer.getPositionInBoard();
+
+
+
+				final Runnable r = new Runnable()
+				{
+				    public void run() 
+				    {
+						Square currentSquare;
+						//while(rolled > 0){
+							//rolled --;
+							currentPlayer.SetPositionInBoard((currentPosition + 1) % squares.size() );
+							currentPosition = currentPlayer.getPositionInBoard();
+							currentSquare = squares.get(currentPosition);
+							iv.animate().translationX(currentSquare.getX() - (imageWidth/2));
+							iv.animate().translationY(currentSquare.getY() - (imageHeight/2));
+							iv.animate().setDuration(MOVETIME);
+							long oldTime = SystemClock.elapsedRealtime();
+							iv.animate().start();
+/*							TranslateAnimation anim = new TranslateAnimation(
+							iv.getX(), currentSquare.getX() - (imageWidth/2),
+							iv.getY(), currentSquare.getY() - (imageHeight/2)) ;
+						    anim.setDuration(1000);
+						    iv.startAnimation(anim);*/
+						    //setText( "is animated: " + iv.getAnimation());
+							setText("Car at position: " + (currentPosition));
+						//}
+				    }
+				};
+				//r.run();
+				int delay = 0;
+				while(rolled > 0){
+					rolled--;
+					iv.postDelayed(r, delay);
+					delay += MOVETIME;
+				}
+
 				
-				//TODO don't round corners
-				setText("Car at position: " + (currentPos - 1));
+				
+				/*final Runnable b = new Runnable(){
+					Runnable br = r;
+					@Override
+					public void run() {
+						br.run();
+						try {
+							this.wait(MOVETIME);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						
+					}
+					
+				};
+				b.run();*/
+
 			}
 		};
     }
@@ -167,5 +211,4 @@ public class MainActivity extends Activity {
 		return super.onTouchEvent(event);
 
 	}
-    
 }
