@@ -98,12 +98,8 @@ playerArray[1].setPostion(boardArray[0]);*/
 		currentPlayer = playerArray[0];
 		player1 = new Player();
 		player2 = new Player();
-<<<<<<< HEAD
-		//square1 = new GoSquare();
-		square1 = new Square(); //TODO change to go square
-=======
 		GoSquare square1 = new GoSquare();
->>>>>>> 3f937c4419100abe03a4e3621b311f1d831e7a24
+
 		playerArray[0] = player1;
 		playerArray[1] = player2;
 		boardArray = new Square[40];

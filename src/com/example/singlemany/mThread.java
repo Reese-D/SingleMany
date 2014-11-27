@@ -134,7 +134,7 @@ public class mThread extends Thread{
 	    	float imageWidth = cPlayer.getImage().getWidth()/2;
 	    	float left = centerX - imageWidth;
 	    	float top = centerY - imageHeight;
-			mCanvas.drawBitmap(cPlayer.getImage(), left, top, null);
+			//mCanvas.drawBitmap(cPlayer.getImage(), left, top, null);
 			
 			//set x,y actual or they will be uninitialized and movement won't work
 			cPlayer.setxyActual(left, top);
@@ -204,8 +204,8 @@ public class mThread extends Thread{
 			c.drawRoundRect(theDrawable, 25f, 25f, myColor);
 			String theText = ((BasicSquare) element).getName();
 			
-			((BasicSquare)element).setX(theDrawable.right - theDrawable.left);
-			((BasicSquare)element).setY(theDrawable.bottom - theDrawable.top);
+			((BasicSquare)element).setX((theDrawable.right - theDrawable.left)/2 + theDrawable.left);
+			((BasicSquare)element).setY((theDrawable.bottom - theDrawable.top)/2 + theDrawable.top);
 			
 			//get text passed down from dimension -> Main -> Board -> here
 			myColor.setTextSize(mTextSize);

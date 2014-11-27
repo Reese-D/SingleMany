@@ -26,10 +26,8 @@ public class Board extends SurfaceView implements SurfaceHolder.Callback {
 	}
     
     public void setupBoard(ArrayList<Player> p, ArrayList<Square> list){
-        //TODO remove, this is just for testing and un-comment this.squares = list;
-    	squares = new ArrayList<Square>();
-    	for(int x = 0; x < 40; x++)
-    		squares.add(new BasicSquare(10, 10, "testName"));
+
+    	squares = list;
     	/*this.squares = list;*/
     	players = p;
     

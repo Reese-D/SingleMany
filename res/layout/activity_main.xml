@@ -19,12 +19,15 @@
         android:layout_height="match_parent"
         android:text="@string/hello_world" />
     <Button 
-        android:id="@+id/temp_button"
+        android:id="@+id/roll_button"
         android:gravity="center"
-        android:layout_marginLeft="100dp"
-        android:layout_marginTop="200dp"
+        android:layout_marginLeft="110dp"
+        android:layout_marginTop="190dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Button"/>
-
+        android:text="Roll"/>
+    <ImageView 
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 </FrameLayout>
