@@ -211,10 +211,11 @@ playerArray[1].setPostion(boardArray[0]);*/
 	
 	public void Buy()
 	{
-		if(currentPlayer.getPosition().typeId == 1)
+		if(currentPlayer.getPosition().typeId == 1){
 			currentPlayer.buyProperty((BasicSquare)currentPlayer.getPosition());
 			currentPlayer.buyHouse((BasicSquare)currentPlayer.getPosition());
 			currentPlayer.buyHotel((BasicSquare)currentPlayer.getPosition());
+		}
 	}
 	
 	//To be called when player clicks End turn button
