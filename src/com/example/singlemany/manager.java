@@ -95,15 +95,17 @@ private Player player2;
 playerArray[1].setPostion(boardArray[0]);*/
 
 	public manager(){
-		currentPlayer = playerArray[0];
+
 		player1 = new Player();
 		player2 = new Player();
+		playerArray = new Player[2];
 		GoSquare square1 = new GoSquare();
 
 		playerArray[0] = player1;
 		playerArray[1] = player2;
 		boardArray = new Square[40];
-		playerArray = new Player[2];
+
+		currentPlayer = playerArray[0];
 		
 		square2 = new BasicSquare(1, 60, "Mediterranean Avenua");
 		square3 = new Square();
@@ -192,7 +194,7 @@ playerArray[1].setPostion(boardArray[0]);*/
 	public void movePlayer()
 	{
 		if(currentPlayer.getHasThrownDice() == false){
-		int amount = currentPlayer.throwDice();
+		/*int amount = currentPlayer.throwDice();
 		for(int i = 0; i < amount; i++)
 		{
 			if(currentPlayer.getPositionInBoard() > 40)
@@ -201,7 +203,7 @@ playerArray[1].setPostion(boardArray[0]);*/
 			}
 			currentPlayer.increasePositionInBoard();
 		}
-		currentPlayer.setPosition(boardArray[currentPlayer.getPositionInBoard()]);
+		currentPlayer.setPosition(boardArray[currentPlayer.getPositionInBoard()]);*/
 		currentPlayer.setHasThrownDice(true);
 		currentPlayer.getPosition().duAction(currentPlayer);
 		

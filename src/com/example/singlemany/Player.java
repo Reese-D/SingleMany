@@ -3,6 +3,7 @@ package com.example.singlemany;
 import java.util.ArrayList;
 
 import android.graphics.Bitmap;
+import android.widget.ImageView;
 
 public class Player {
 	public final int velocity = 100;
@@ -14,7 +15,7 @@ public class Player {
 	private ArrayList<BasicSquare> properties = new ArrayList();
 	private double money;
 	private boolean hasThrownDice;
-	private Bitmap image;
+	private ImageView image;
 	private float xActual, yActual;
 	
 	public Player(){
@@ -47,11 +48,11 @@ public class Player {
 		return movingToPosition;
 	}
 	
-	public void setImage(Bitmap b){
+	public void setImage(ImageView b){
 		image = b;
 	}
 	
-	public Bitmap getImage(){
+	public ImageView getImage(){
 		return image;
 	}
 	

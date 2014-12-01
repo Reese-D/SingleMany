@@ -9,9 +9,7 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.os.Handler;
 import android.os.SystemClock;
-import android.util.Log;
 import android.view.SurfaceHolder;
-import android.webkit.WebView.FindListener;
 
 public class mThread extends Thread{
 	SurfaceHolder mSurfaceHolder;
@@ -195,9 +193,9 @@ public class mThread extends Thread{
 	private void doDraw(Canvas c){
 		//c.drawARGB(255, 155, 55, 5);
 
-		Paint myColor = setColor(Color.BLUE);
+
 		for(Square element : drawnSquares){
-			myColor = setColor(((BasicSquare)element).getPaint().getColor());
+			Paint myColor = setColor(((BasicSquare)element).getPaint().getColor());
 			RectF theDrawable = ((BasicSquare) element).getRectF();
 			c.drawRoundRect(theDrawable, 25f, 25f, myColor);
 			myColor = setBorder(Color.BLACK);
