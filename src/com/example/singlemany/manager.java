@@ -1,9 +1,11 @@
 package com.example.singlemany;
 
+import java.util.ArrayList;
+
 public class manager {
 
 Square[] boardArray;
-Player[] playerArray;
+ArrayList<Player> playerArray;
 
 /*playerArray[0] = player1;
 playerArray[1] = player2;*/
@@ -89,6 +91,7 @@ private Square square39;
 private BasicSquare square40;
 private Player player1;
 private Player player2;
+public ArrayList<Square> boardArrayList;
 
 
 /*playerArray[0].setPostion(boardArray[0]);
@@ -98,14 +101,15 @@ playerArray[1].setPostion(boardArray[0]);*/
 
 		player1 = new Player();
 		player2 = new Player();
-		playerArray = new Player[2];
+		playerArray = new ArrayList<Player>();
 		GoSquare square1 = new GoSquare();
 
-		playerArray[0] = player1;
-		playerArray[1] = player2;
-		boardArray = new Square[40];
+		playerArray.add(player1);
+		playerArray.add(player2);
+		//TODO set back to 40
+		boardArray = new Square[28];
 
-		currentPlayer = playerArray[0];
+		currentPlayer = playerArray.get(0);
 		
 		square2 = new BasicSquare(1, 60, "Mediterranean Avenua");
 		square3 = new Square();
@@ -133,7 +137,7 @@ playerArray[1].setPostion(boardArray[0]);*/
 		square25 = new BasicSquare(5, 240, "Illinois Avenue");
 		square26 = new Square();
 		square27 = new BasicSquare(6, 260, "Atlantic Avenue");
-		square28 = new BasicSquare(6, 260, "Ventinor Avenue");
+		/*square28 = new BasicSquare(6, 260, "Ventinor Avenue");
 		square29 = new Square();
 		square30 = new BasicSquare(6, 280, "Marvin Gardens");
 		square31 = new Square();
@@ -145,7 +149,7 @@ playerArray[1].setPostion(boardArray[0]);*/
 		square37 = new Square();
 		square38 = new BasicSquare(8, 350, "Park Place");
 		square39 = new Square();
-		square40 = new BasicSquare(8, 400, "Boardwalk");
+		square40 = new BasicSquare(8, 400, "Boardwalk");*/
 		boardArray[0] = square1;
 		boardArray[1] = square2;
 		boardArray[2] = square3;
@@ -174,7 +178,7 @@ playerArray[1].setPostion(boardArray[0]);*/
 		boardArray[25] = square26;
 		boardArray[26] = square27;
 		boardArray[27] = square28;
-		boardArray[28] = square29;
+		/*boardArray[28] = square29;
 		boardArray[29] = square30;
 		boardArray[30] = square31;
 		boardArray[31] = square32;
@@ -185,10 +189,15 @@ playerArray[1].setPostion(boardArray[0]);*/
 		boardArray[36] = square37;
 		boardArray[37] = square38;
 		boardArray[38] = square39;
-		boardArray[39] = square40;
+		boardArray[39] = square40;*/
+		boardArrayList = new ArrayList<Square>();
+		for(Square c: boardArray){
+			if(c != null)
+				boardArrayList.add(c);
+		}
 		
-		playerArray[0].setPosition(boardArray[0]);
-		playerArray[1].setPosition(boardArray[0]);
+		playerArray.get(0).setPosition(boardArray[0]);
+		playerArray.get(1).setPosition(boardArray[0]);
 	}
 	//To be called when player hits throw dice button
 	public void movePlayer()

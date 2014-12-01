@@ -1,5 +1,6 @@
 package com.example.singlemany;
 
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 
@@ -12,6 +13,13 @@ public class Square {
 	//Add some variables to comply with mThread class
 	protected Paint mPaint = new Paint();
 	protected RectF mRectF = new RectF();
+	
+	public Square(){
+		//set paint defaults
+		mPaint.setColor(Color.BLUE);
+		mPaint.setAntiAlias(true);
+		mPaint.setAlpha(255);
+	}
 	public void duAction(Player player)
 	{
 		

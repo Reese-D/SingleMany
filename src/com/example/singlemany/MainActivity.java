@@ -21,7 +21,7 @@ public class MainActivity extends Activity {
 
 	manager m;
 	
-	//arraylists for the different objects we'll be dealing with
+	//ArrayLists for the different objects we'll be dealing with
 	ArrayList<Bitmap> playerBitmaps;
 	ArrayList<Player> players;
 	ArrayList<Square> squares;
@@ -44,7 +44,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
- 
+
         //create a new manager instance, the logical manager of gameflow
         m = new manager();
 
@@ -52,6 +52,7 @@ public class MainActivity extends Activity {
         		//FrameLayout myFLayout = (FrameLayout) findViewById(R.id.Layout1);
         
         //instantiate some of our resources and arrays
+    	players = m.playerArray;
         playerBitmaps = new ArrayList<Bitmap>();
         information = (TextView) findViewById(R.id.Info);
         gameBoard = (View) findViewById(R.id.Board);
@@ -81,9 +82,10 @@ public class MainActivity extends Activity {
         endTurn.setOnClickListener(setEndTurnButtonListener());
         
         //TODO remove, creates some squares just for testing the application
-    	squares = new ArrayList<Square>();
+        squares = m.boardArrayList;
+    	/*squares = new ArrayList<Square>();
     	for(int x = 0; x < 28; x++)
-    		squares.add(new BasicSquare(10, 10, "test\nNameof Square"));
+    		squares.add(new BasicSquare(10, 10, "test\nNameof Square"));*/
         
        
         
@@ -121,32 +123,17 @@ public class MainActivity extends Activity {
         iv.setX(squares.get(0).getX());
         iv.setY(squares.get(0).getY());
         
+        
     	//TODO create a method to get players from manager class and pass it down, then delete this
     	//for now just creates two players, both with red cars, but one won't be drawn because the
     	//change player function isn't implemented
-    	players = new ArrayList<Player>();
-    	
-    	//create the players
-    	Player p1 = new Player();
-    	Player p2 = new Player();
-    	Player p3 = new Player();
-    	Player p4 = new Player();
+
     	
     	//set the image for each TODO add the other three players
-    	p1.setImage(iv);
+    	players.get(0).setImageView(iv);
     	
-    	//add them to the ArrayList
-    	players.add(p1);
-    	players.add(p2);
-        
-    }
 
-    public void getPlayerBitmap(int index) throws IndexOutOfBoundsException{
-    	if(index > playerBitmaps.size() -1){
-    		throw new IndexOutOfBoundsException("There are no images at the specified index");
-    	}
     }
-
     
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -154,6 +141,9 @@ public class MainActivity extends Activity {
         return true;
     }
     
+    /**
+     * @return returns a listener for the EndTurn button
+     */
     public View.OnClickListener setEndTurnButtonListener(){
     	return new OnClickListener(){
 	    	@Override
@@ -164,6 +154,9 @@ public class MainActivity extends Activity {
     	};
     }
     
+    /**
+     * @return sets a listener for the ROLL button
+     */
     public View.OnClickListener setButtonListener(){
     	return new OnClickListener() {
 			
@@ -179,16 +172,21 @@ public class MainActivity extends Activity {
 				{
 				    public void run() 
 				    {
+				    	//TODO change from iv to the current players ImageView
 						Square currentSquare;
 						currentPlayer.SetPositionInBoard((currentPosition + 1) % squares.size() );
 						currentPosition = currentPlayer.getPositionInBoard();
 						currentSquare = squares.get(currentPosition);
+						
+						//animate image view
 						iv.animate().translationX(currentSquare.getX() - (imageWidth/2));
 						iv.animate().translationY(currentSquare.getY() - (imageHeight/2));
 						iv.animate().setDuration(MOVETIME);
 						//long oldTime = SystemClock.elapsedRealtime();
 						iv.animate().start();
-						setText("Car at position: " + (currentPosition));
+						setText("Car at position: " + (currentSquare.name));
+						
+						//players may exchange cash so update all players money
 						for(int i = 0; i < players.size(); i++){
 							//for ever player get their cash and set the corresponding
 							//gold text to the amount
@@ -199,28 +197,41 @@ public class MainActivity extends Activity {
 				    }
 				};
 				int delay = 0;
+				
+				//call each move 1 at a time with a delay between them
 				while(rolled > 0){
 					rolled--;
 					iv.postDelayed(r, delay);
 					delay += MOVETIME;
 				}
+				
+				//have the manager move player so it updates
 				m.movePlayer();
-				for(int p = 0; p < players.size(); p++){
-					players.get(p).getMoney();
-				}
 			}
 		};
     }
     
+   
+    /**
+     * @param string new text for the center of the screen
+     * @param color change the color of the text if needed
+     */
     public void setText(String string, int color){
     	information.setTextColor(color);
      	information.setText(string);
     }
     
+    /**
+     * @param string the amount of gold to display
+     * @param index the players index in the array to be updated
+     */
     public void setPlayerGold(String string, int index){
     	playersMoney.get(index).setText(string);
     }
     
+    /** Uses the current color for the text
+     * @param s string for new text in center of the screen
+     */
     public void setText(String s){
      	information.setText(s);
     }
@@ -239,18 +250,24 @@ public class MainActivity extends Activity {
 
 
 
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onTouchEvent(android.view.MotionEvent)
+	 */
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		//TODO add on touch events
+		//get the x and y of the touch
 		float x = event.getX();
 		float y = event.getY();
 		Square temp = currentlySelectedSquare;
+		
+		//check if the x y is within one of the squares
 		for(Square element :squares){
 			if(element.getRectF().contains(x, y)){
 				currentlySelectedSquare = element;
 				setText("selected square: " + (element.name));
 				
-				//show the selected square by fading it out some
+				//show the selected square by fading it out some, this currently
+				//doesn't do anything //TODO remove possibly
 				element.getPaint().setAlpha(120);
 				if(temp != null)
 					temp.getPaint().setAlpha(255);

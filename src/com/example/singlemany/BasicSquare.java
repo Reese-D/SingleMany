@@ -27,10 +27,7 @@ public class BasicSquare extends Square{
 		super.setName(name);
 		super.typeId = 1;
 		
-		//set paint defaults
-		mPaint.setColor(Color.BLUE);
-		mPaint.setAntiAlias(true);
-		mPaint.setAlpha(255);
+
 		
 	}
 	

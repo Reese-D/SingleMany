@@ -57,6 +57,10 @@ public class mThread extends Thread{
 	
 	
 	
+	/**
+	 * @param surfaceHolder the surface we'll use to draw
+	 * @param context the class that created this
+	 */
 	public mThread(SurfaceHolder surfaceHolder, Context context) {
 		//copy constructor inputs for later use
 		mSurfaceHolder = surfaceHolder;
@@ -65,10 +69,19 @@ public class mThread extends Thread{
 
 	}
 	
+	/**
+	 * @param t text size for square names
+	 */
 	public void setTextSize(int t){
 		mTextSize = t;
 	}
 	
+	/**
+	 * @param list all the squares on the board
+	 * @param canvasWidth the canvas's width
+	 * @param canvasHeight the canvas's height
+	 * @param players all of the players in the game
+	 */
 	public void setUp(ArrayList<Square> list, int canvasWidth, int canvasHeight, ArrayList<Player> players){
 		
 		//initialize arrays
@@ -86,34 +99,29 @@ public class mThread extends Thread{
 
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Thread#run()
+	 */
 	@Override
 	public void run(){
 		super.run();
 		while(running){
+			
+			//get time in order to calculate fps
 			currentTime = SystemClock.elapsedRealtime();
 			framesPerSecond = (1.0/(currentTime - oldTime));
 			oldTime = SystemClock.elapsedRealtime();
 			try{
 				//if we draw before this we'll try drawing from drawnSquares which is empty
-				/*if(!setUpComplete)
-					continue;*/
 				if(!mSurfaceHolder.getSurface().isValid())
 					continue;
-
+				
+				//lock canvas so we can draw, and also get the canvas to draw on
 				mCanvas = mSurfaceHolder.lockCanvas(null);
 				
-				//draw the surface if it's changed or on the start of program
-				//if(surfaceChanged){
-					doDraw(mCanvas);
-					surfaceChanged = false;
-				//}
-				
-				//draw the players starting locations if they haven't been drawn yet
-				if(!playersInitialized){
-					intializePlayers(mCanvas);
-				}else{
-					//movePlayers();
-				}
+				//draw the board
+				doDraw(mCanvas);
+
 			}finally{
 				if(mCanvas != null){
 					mSurfaceHolder.unlockCanvasAndPost(mCanvas);
@@ -122,7 +130,8 @@ public class mThread extends Thread{
 		}
 	}
 	
-	private void intializePlayers(Canvas c){
+	//TODO delete or find some use for it
+/*	private void intializePlayers(Canvas c){
 
 		for(Player cPlayer : players){
 			//get the players current position in board and get the top left corner of that rectangle
@@ -136,9 +145,11 @@ public class mThread extends Thread{
 			
 			//set x,y actual or they will be uninitialized and movement won't work
 			cPlayer.setxyActual(left, top);
+
 		}
-	}
+	}*/
 	
+	//TODO delete unless some of the code can be re-used later
 	private void movePlayers(){
 		for(Player cPlayer : players){
 			if(cPlayer.getPositionInBoard() != cPlayer.getMovingTo()){
@@ -190,20 +201,31 @@ public class mThread extends Thread{
 		}
 	}
 	
+	/** Draws all the squares to the board and sets their name as well
+	 * @param c the canvas to draw to
+	 */
 	private void doDraw(Canvas c){
-		//c.drawARGB(255, 155, 55, 5);
 
 
 		for(Square element : drawnSquares){
-			Paint myColor = setColor(((BasicSquare)element).getPaint().getColor());
-			RectF theDrawable = ((BasicSquare) element).getRectF();
+			
+			//get the squares paint and rectangular dimensions
+			Paint myColor = setColor(((Square)element).getPaint().getColor());
+			RectF theDrawable = ((Square) element).getRectF();
+			
+			//draw the rectangle
 			c.drawRoundRect(theDrawable, 25f, 25f, myColor);
+			
+			//change color to black and draw the border around the square
 			myColor = setBorder(Color.BLACK);
 			c.drawRoundRect(theDrawable, 25f, 25f, myColor);
-			String theText = ((BasicSquare) element).getName();
 			
-			((BasicSquare)element).setX((theDrawable.right - theDrawable.left)/2 + theDrawable.left);
-			((BasicSquare)element).setY((theDrawable.bottom - theDrawable.top)/2 + theDrawable.top);
+			//get the name so we can draw it on the square
+			String theText = ((Square)element).getName();
+			
+			//set the CENTER of the squares x and y so that later players can know where to move to
+			((Square)element).setX((theDrawable.right - theDrawable.left)/2 + theDrawable.left);
+			((Square)element).setY((theDrawable.bottom - theDrawable.top)/2 + theDrawable.top);
 			
 			//get text passed down from dimension -> Main -> Board -> here
 			myColor.setTextSize(mTextSize);
@@ -211,12 +233,18 @@ public class mThread extends Thread{
 			//find text actual length by multiplying the number of characters times the size of the text
 			//multiply the size of the text by 0.6 because text size given is in height and width of text
 			//is 3/5 of the texts height, then divide by 2 to center the text.
-			c.drawText(theText, (float) (theDrawable.centerX() - (theText.length() *(mTextSize * 0.6))/2), theDrawable.centerY(), myColor);
+			//If the square has no name theText could be null
+			if(theText != null)
+				c.drawText(theText, (float) (theDrawable.centerX() - (theText.length() *(mTextSize * 0.6))/2), theDrawable.centerY(), myColor);
 
 			
 		}
 	}
 	
+	/** Sets up the border for the squares so the other method isn't so large
+	 * @param color color of the border
+	 * @return Paint object for a decent border
+	 */
 	private Paint setBorder(int color){
 		Paint newColor = new Paint();
 		newColor.setColor(color);
@@ -226,6 +254,10 @@ public class mThread extends Thread{
 		return newColor;
 	}
 	
+	/**
+	 * @param color the color the paint should be
+	 * @return the paint object with the given color, for the square
+	 */
 	private Paint setColor(int color){
 		//create new color and fill it in
 		Paint newColor = new Paint();
@@ -235,19 +267,29 @@ public class mThread extends Thread{
 		return newColor;
 	}
 	
+	//TODO fix bug, drawing the last 4 squares on top of eachother
+	/** Sets up the Squares in the array by finding where each should be drawn and
+	 *  setting their RectF property
+	 */
 	private void setUpArray(){
+		
+		//first square will be in the top left corner
 		float tempIntLeft = 0;
 		float tempIntTop = 0;
 		float tempIntRight = (float) squareWidth;
 		float tempIntBottom =  (float) squareHeight;
-		int counter = 1;
+		
+		//some counters so we know which square / side we're on
+		int counter = 0;
+		//the current side 0 being the top 3 being the left
 		int counter2 = 0;
 		for(Square element : drawnSquares){
-
-			((BasicSquare) element).setRectF(new RectF(tempIntLeft, tempIntTop, tempIntRight, tempIntBottom));
+			//draw
+			element.setRectF(new RectF(tempIntLeft, tempIntTop, tempIntRight, tempIntBottom));
 			
+			//if you're on the top of the screen, move the square to the right
 			if(counter2 == 0){
-				tempIntLeft += squareWidth + 1; 
+				tempIntLeft += squareWidth + 1;
 				tempIntRight += squareWidth + 1;
 			}
 			//" " left " " " bottom " " " 
@@ -265,9 +307,12 @@ public class mThread extends Thread{
 				tempIntTop -= squareHeight + 1; 
 				tempIntBottom -= squareHeight + 1;
 			}
+			//move to the next square
 			counter++;
-			if(counter == numSquares + 1){
-				counter = 1;
+			
+			//if we're done drawing all the squares on one side, move to the next
+			if(counter == numSquares){
+				counter = 0;
 				counter2++;
 			}
 		}
@@ -281,10 +326,18 @@ public class mThread extends Thread{
     	p.setMovingTo(boardIndex);
     }
 	
+ 
+	/** start or stop the run() method
+	 * @param b determines whether the board will continue to be redrawn
+	 */
 	public void setRunning(Boolean b){
 		running = b;
 	}
 
+	/** updates the canvas's dimensions if they change
+	 * @param width new canvas width
+	 * @param height new canvas height
+	 */
 	public void setSurfaceSize(int width, int height) {
 		squareHeight = height / (numSquares + 1) - 1;
 		squareWidth = width / (numSquares + 1) - 1;
