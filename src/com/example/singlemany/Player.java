@@ -3,6 +3,7 @@ package com.example.singlemany;
 import java.util.ArrayList;
 
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.media.Image;
 import android.widget.ImageView;
 
@@ -19,6 +20,7 @@ public class Player {
 	private Bitmap image;
 	private ImageView imageView;
 	private float xActual, yActual;
+	Color playerColor;
 	
 	public Player(){
 		image = null;
@@ -28,6 +30,7 @@ public class Player {
 		hasThrownDice = false;
 		positionInBoard = 0;
 		movingToPosition = 0;
+		
 		//position = 0; //TODO position is square type, change this
 	}
 	

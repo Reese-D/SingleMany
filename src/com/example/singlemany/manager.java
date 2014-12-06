@@ -137,8 +137,8 @@ playerArray[1].setPostion(boardArray[0]);*/
 		square25 = new BasicSquare(5, 240, "Illinois Avenue");
 		square26 = new Square();
 		square27 = new BasicSquare(6, 260, "Atlantic Avenue");
-		/*square28 = new BasicSquare(6, 260, "Ventinor Avenue");
-		square29 = new Square();
+		square28 = new BasicSquare(6, 260, "Ventinor Avenue");
+		/*square29 = new Square();
 		square30 = new BasicSquare(6, 280, "Marvin Gardens");
 		square31 = new Square();
 		square32 = new BasicSquare(7, 300, "Pacific Avenue");
@@ -220,12 +220,15 @@ playerArray[1].setPostion(boardArray[0]);*/
 		
 	}
 	
-	public void Buy()
+	public void Buy(Square s)
 	{
-		if(currentPlayer.getPosition().typeId == 1){
+
+		//can only buy property if you land on it
+		if(currentPlayer.getPosition().typeId == 1)
 			currentPlayer.buyProperty((BasicSquare)currentPlayer.getPosition());
-			currentPlayer.buyHouse((BasicSquare)currentPlayer.getPosition());
-			currentPlayer.buyHotel((BasicSquare)currentPlayer.getPosition());
+		if(s.typeId == 1){
+			currentPlayer.buyHouse((BasicSquare)s);
+			currentPlayer.buyHotel((BasicSquare)s);
 		}
 	}
 	

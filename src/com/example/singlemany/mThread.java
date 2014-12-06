@@ -90,8 +90,8 @@ public class mThread extends Thread{
 		
 		//find the number of squares on each side of the board
 		numSquares = ((list.size() / 4));
-		squareHeight = canvasHeight / (numSquares + 1) - 1;
-		squareWidth = canvasWidth / (numSquares + 1) - 1;
+		squareHeight = (canvasHeight / (numSquares + 1)) - 1;
+		squareWidth = (canvasWidth / (numSquares + 1)) - 1;
 		
 		//set up an array of (numSquares) draw able rectangles to be displayed
 		setUpArray();
@@ -130,77 +130,6 @@ public class mThread extends Thread{
 		}
 	}
 	
-	//TODO delete or find some use for it
-/*	private void intializePlayers(Canvas c){
-
-		for(Player cPlayer : players){
-			//get the players current position in board and get the top left corner of that rectangle
-	    	float centerX = ((BasicSquare) drawnSquares.get(cPlayer.getPositionInBoard())).getRectF().centerY();
-	    	float centerY = ((BasicSquare) drawnSquares.get(cPlayer.getPositionInBoard())).getRectF().centerX();
-	    	float imageHeight = cPlayer.getImage().getHeight()/2;
-	    	float imageWidth = cPlayer.getImage().getWidth()/2;
-	    	float left = centerX - imageWidth;
-	    	float top = centerY - imageHeight;
-			//mCanvas.drawBitmap(cPlayer.getImage(), left, top, null);
-			
-			//set x,y actual or they will be uninitialized and movement won't work
-			cPlayer.setxyActual(left, top);
-
-		}
-	}*/
-	
-	//TODO delete unless some of the code can be re-used later
-	private void movePlayers(){
-		for(Player cPlayer : players){
-			if(cPlayer.getPositionInBoard() != cPlayer.getMovingTo()){
-				/*//initialize square to move to
-				RectF nextRectF;
-				
-				//get center of the image to be drawn
-		    	float imageHeight = cPlayer.getImage().getHeight()/2;
-		    	float imageWidth = cPlayer.getImage().getWidth()/2;
-		    	
-		    	//find the center of the current square
-				currentX = cPlayer.getxActual();
-				currentY = cPlayer.getyActual();
-				
-				//find and instantiate the next square, wrap around if at the end of the boards
-				nextRectF = drawnSquares.get((cPlayer.getPositionInBoard() + 1) % drawnSquares.size()).getRectF();
-
-				
-				//find the center of the next square
-				futureX = nextRectF.centerX();
-				futureY = nextRectF.centerY();
-				
-				//find the corner of the image when it's centered over the square
-				futureX = futureX - imageWidth;
-				futureY = futureY - imageHeight;
-		    	
-		    	//find the delta of the 2 points
-		    	float delta_x = futureX - currentX;
-		    	float delta_y = futureY - currentY;
-		    	
-		    	//calculate the angle
-		    	double angle = Math.atan2(delta_y, delta_x);
-		    	
-		    	//okay we finally have the angle, now we'll use the players speed and our frames per second to find
-		    	//a vector between where we are and a point part-way between us and our goal
-		    	currentX = (float) (currentX + Math.cos(angle) * (cPlayer.velocity * framesPerSecond));
-		    	currentY = (float) (currentY - Math.sin(angle) * (cPlayer.velocity * framesPerSecond));    // minus on the sin because +, + is bottom right not top right
-		    	
-		    	//set new currentXY then draw it
-		    	cPlayer.setxyActual(currentX, currentY);
-		    	mCanvas.drawBitmap(cPlayer.getImage(), currentX, currentY, null);
-		    	
-		    	//if we're within one frame of our destination set it as our new current position
-		    	if(Math.abs(currentX - futureX)  <= Math.abs(cPlayer.velocity * framesPerSecond) &&
-		    			Math.abs(currentY - futureY)  <= Math.abs(cPlayer.velocity * framesPerSecond)){
-		    		cPlayer.SetPositionInBoard((cPlayer.getPositionInBoard() + 1 )% drawnSquares.size());
-		    	}*/
-			}
-		}
-	}
-	
 	/** Draws all the squares to the board and sets their name as well
 	 * @param c the canvas to draw to
 	 */
@@ -210,7 +139,8 @@ public class mThread extends Thread{
 		for(Square element : drawnSquares){
 			
 			//get the squares paint and rectangular dimensions
-			Paint myColor = setColor(((Square)element).getPaint().getColor());
+			//Paint myColor = setColor(((Square)element).getPaint().getColor());
+			Paint myColor = element.getPaint();
 			RectF theDrawable = ((Square) element).getRectF();
 			
 			//draw the rectangle
@@ -281,7 +211,7 @@ public class mThread extends Thread{
 		
 		//some counters so we know which square / side we're on
 		int counter = 0;
-		//the current side 0 being the top 3 being the left
+		//the current side: 0 being the top 3 being the left
 		int counter2 = 0;
 		for(Square element : drawnSquares){
 			//draw

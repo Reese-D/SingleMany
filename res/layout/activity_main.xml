@@ -19,30 +19,37 @@
         android:layout_height="match_parent"
         android:text="@string/hello_world" />
     <TextView
+        android:id="@+id/Info1"
+        android:gravity="center"
+        android:layout_marginTop="200dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/hello_world" />
+    <TextView
         android:id="@+id/player1Gold"
         android:layout_marginLeft="50dp"
-        android:layout_marginTop="55dp"
+        android:layout_marginTop="60dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:text="@string/hello_world" />
         <TextView
         android:id="@+id/player2Gold"
         android:layout_marginLeft="50dp"
-        android:layout_marginTop="65dp"
+        android:layout_marginTop="70dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:text="@string/hello_world" />
             <TextView
         android:id="@+id/player3Gold"
         android:layout_marginLeft="50dp"
-        android:layout_marginTop="75dp"
+        android:layout_marginTop="80dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:text="@string/hello_world" />
                 <TextView
         android:id="@+id/player4Gold"
         android:layout_marginLeft="50dp"
-        android:layout_marginTop="85dp"
+        android:layout_marginTop="90dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:text="@string/hello_world" />
@@ -51,18 +58,27 @@
         android:id="@+id/roll_button"
         android:gravity="center"
         android:layout_marginLeft="100dp"
-        android:layout_marginTop="190dp"
+        android:layout_marginTop="110dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Roll"/>
-        <Button 
+    <Button 
         android:id="@+id/end_turn_button"
         android:gravity="center"
-        android:layout_marginLeft="170dp"
+        android:layout_marginLeft="100dp"
         android:layout_marginTop="190dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="End Turn"/>
+    <Button
+        android:id="@+id/buy_property"
+        android:gravity="center"
+        android:layout_marginLeft="100dp"
+        android:layout_marginTop="150dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Purchase"/>
+        
     <ImageView 
         android:id="@+id/imageView1"
         android:layout_width="wrap_content"

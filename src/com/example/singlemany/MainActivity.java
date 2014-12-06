@@ -47,9 +47,6 @@ public class MainActivity extends Activity {
 
         //create a new manager instance, the logical manager of gameflow
         m = new manager();
-
-        		//old commented out code, ignore, may be re-used later
-        		//FrameLayout myFLayout = (FrameLayout) findViewById(R.id.Layout1);
         
         //instantiate some of our resources and arrays
     	players = m.playerArray;
@@ -76,18 +73,15 @@ public class MainActivity extends Activity {
         //setup buttons
         Button roll = (Button) findViewById(R.id.roll_button);
         Button endTurn = (Button) findViewById(R.id.end_turn_button);
+        Button buyProperty = (Button) findViewById(R.id.buy_property);
         
    	 	//set button listener
         roll.setOnClickListener(setButtonListener());
         endTurn.setOnClickListener(setEndTurnButtonListener());
+        buyProperty.setOnClickListener(setBuyPropertyListener());
         
         //TODO remove, creates some squares just for testing the application
         squares = m.boardArrayList;
-    	/*squares = new ArrayList<Square>();
-    	for(int x = 0; x < 28; x++)
-    		squares.add(new BasicSquare(10, 10, "test\nNameof Square"));*/
-        
-       
         
         //add the bitmaps to array
         	//TODO add more cars and add them to the list, right now we only have red car
@@ -96,9 +90,7 @@ public class MainActivity extends Activity {
         //set some defaults to the board to make it look nicer
         ((Board) gameBoard).setTextSize(textSize);
     	information.setTextColor(Color.WHITE);
-    	
 
-    	
     	//TODO change if the player array or square array is conceived differently
     	((Board) gameBoard).setupBoard(players, squares);
     	
@@ -135,7 +127,24 @@ public class MainActivity extends Activity {
 
     }
     
-    public boolean onCreateOptionsMenu(Menu menu) {
+    private OnClickListener setBuyPropertyListener() {
+		return new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				//buy currently selected square
+				if(currentlySelectedSquare != null)
+					m.Buy(currentlySelectedSquare);
+				//TODO change part of the squares color to the players color
+				for(Player c :players){
+					for(Square s : c.getProperties()){
+						s.setPaintColor(c.getColor);
+					}
+				}
+			}
+		};
+	}
+
+	public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
@@ -165,8 +174,6 @@ public class MainActivity extends Activity {
 				currentPlayer= m.currentPlayer;
 				rolled = currentPlayer.throwDice();
 				currentPosition = currentPlayer.getPositionInBoard();
-
-
 
 				final Runnable r = new Runnable()
 				{
@@ -266,10 +273,11 @@ public class MainActivity extends Activity {
 				currentlySelectedSquare = element;
 				setText("selected square: " + (element.name));
 				
-				//show the selected square by fading it out some, this currently
-				//doesn't do anything //TODO remove possibly
-				element.getPaint().setAlpha(120);
+				//TODO remove red and get alpha to work
+				element.getPaint().setAlpha(50);
+				element.getPaint().setColor(Color.RED);
 				if(temp != null)
+					temp.getPaint().setColor(Color.BLUE);
 					temp.getPaint().setAlpha(255);
 				return super.onTouchEvent(event);
 			}
