@@ -1,4 +1,4 @@
-package com.example.singlemany;
+/*package com.example.singlemany;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -278,11 +278,11 @@ public class Bluetooth extends Activity{
 		}
     };
     
-    /*
+    
      * -------------------------------------------------------------------------------------------------------
      * Thread that will handle other devices request connections
      * -------------------------------------------------------------------------------------------------------
-     */
+     
     private Runnable makeRunnable(final Context c){
 		String Tag = "Bluetooth.makeRunnable";
     	return new Runnable(){
@@ -376,3 +376,4 @@ public class Bluetooth extends Activity{
     
 
 }
+*/
