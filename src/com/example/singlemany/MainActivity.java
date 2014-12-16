@@ -267,13 +267,16 @@ public class MainActivity extends Activity {
 		int delay = 0;
 		
 		//call each move 1 at a time with a delay between them
-		if(currentPlayer.getHasThrownDice()){
+		if(!currentPlayer.getHasThrownDice()){
 			while(currentSquare.typeId != 4){
 				iv.postDelayed(r, delay);
 				delay += MOVETIME;
-				//have the manager move player so it updates
-				m.movePlayer();
+				if(currentSquare.typeId == 2){
+					currentSquare.duAction(currentPlayer);
+				}
 			}
+			//have the manager move player so it updates
+			m.movePlayer();
 		}
     }
     
@@ -314,14 +317,18 @@ public class MainActivity extends Activity {
 		int delay = 0;
 		
 		//call each move 1 at a time with a delay between them
-		if(currentPlayer.getHasThrownDice()){
+		if(!currentPlayer.getHasThrownDice()){
+			currentPlayer.setHasThrownDice(true);
 			while(rolled > 0){
 				rolled--;
 				iv.postDelayed(r, delay);
 				delay += MOVETIME;
 				//have the manager move player so it updates
-				m.movePlayer();
+				if(currentSquare.typeId == 2){
+					currentSquare.duAction(currentPlayer);
+				}
 			}
+			m.movePlayer();
 		}
 
     }
