@@ -76,6 +76,12 @@ public class MainActivity extends Activity {
 	private BluetoothSocket mBluetoothSocket;
 
 	private String Tag = "MainActivity.java";
+
+	private TextView information1;
+
+	private TextView information2;
+
+	private TextView information3;
 	
     protected void onCreate(Bundle savedInstanceState) {
         myView = getLayoutInflater().inflate(R.layout.activity_main, null);
@@ -94,6 +100,14 @@ public class MainActivity extends Activity {
     	players = m.playerArray;
         playerBitmaps = new ArrayList<Bitmap>();
         information = (TextView) findViewById(R.id.Info);
+        information1 = (TextView) findViewById(R.id.Info1);
+        information2 = (TextView) findViewById(R.id.Info2);
+        information3 = (TextView) findViewById(R.id.Info3);
+        information.setTextColor(Color.WHITE);
+        information1.setTextColor(Color.WHITE);
+        information2.setTextColor(Color.WHITE);
+        information3.setTextColor(Color.WHITE);
+        
         gameBoard = (View) findViewById(R.id.Board);
         playersMoney = new ArrayList<TextView>();
         currentlySelectedSquare = null;
