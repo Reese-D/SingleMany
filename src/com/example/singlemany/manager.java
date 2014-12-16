@@ -209,7 +209,7 @@ playerArray[1].setPostion(boardArray[0]);*/
 	//To be called when player hits throw dice button
 	public void movePlayer()
 	{
-		if(currentPlayer.getHasThrownDice() == false){
+		//if(currentPlayer.getHasThrownDice() == false){
 		/*int amount = currentPlayer.throwDice();
 		for(int i = 0; i < amount; i++)
 		{
@@ -220,10 +220,8 @@ playerArray[1].setPostion(boardArray[0]);*/
 			currentPlayer.increasePositionInBoard();
 		}
 		currentPlayer.setPosition(boardArray[currentPlayer.getPositionInBoard()]);*/
-		currentPlayer.setHasThrownDice(true);
+		//currentPlayer.setHasThrownDice(true);
 		currentPlayer.getPosition().duAction(currentPlayer);
-		
-		}
 		
 	}
 	
@@ -243,7 +241,7 @@ playerArray[1].setPostion(boardArray[0]);*/
 	public void changePlayer()
 	{
 
-		
+		currentPlayer.setHasThrownDice(false);
 		if(currentPlayer.getId() == 1)
 		{
 			currentPlayer = playerArray.get(1);

@@ -1,12 +1,16 @@
 package com.example.singlemany;
 
+import android.content.Context;
+
 public class SpecialSquare extends Square {
-	private int value = (int )(Math.random() * 3 + 1);
+	private int value = (int )(Math.random() * 4 + 1);
 	private String action;
+	MainActivity c;
 	
-	public SpecialSquare (String name){
+	public SpecialSquare (String name, Context c){
 		super.setName(name);
 		super.typeId = 3;
+		this.c = (MainActivity)c;
 		
 	}
 	
@@ -24,6 +28,11 @@ public class SpecialSquare extends Square {
 		case 3:
 			player.setIsInJail(true);
 			action = "You need to go to jail for one turn";
+			c.moveToSquareType(4);
+			break;
+		case 4:
+			action = "Go to Go square";
+			c.moveToSquareType(2);
 			break;
 			
 		}
