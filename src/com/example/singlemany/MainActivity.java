@@ -36,23 +36,23 @@ public class MainActivity extends Activity {
 	manager m;
 	
 	//ArrayLists for the different objects we'll be dealing with
-	ArrayList<Bitmap> playerBitmaps;
+	public ArrayList<Bitmap> playerBitmaps;
 	public ArrayList<Player> players;
 	public ArrayList<Square> squares;
-	ArrayList<TextView> playersMoney;
+	public ArrayList<TextView> playersMoney;
 	int textSize;
 	View gameBoard;
 	CharSequence c = "i am the char sequence";
-	TextView information;
-	String s;
+	public TextView information;
+	public String s;
 	ImageView iv;
 	ImageView iv2;
 	int imageWidth, imageHeight;
 	final int IMAGESCALE = 15;
 	final int MOVETIME = 500;
 	int rolled, currentPosition;
-	Player currentPlayer;
-	Square currentlySelectedSquare;
+	public Player currentPlayer;
+	public Square currentlySelectedSquare;
 	BluetoothDevice mBluetoothDevice;
 	private final int bluetoothRequestCode = 1241;
 	View myView;
