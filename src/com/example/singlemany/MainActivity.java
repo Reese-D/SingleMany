@@ -134,6 +134,7 @@ public class MainActivity extends Activity {
         for(TextView x : playersMoney){
         	x.setText("Gold: 0");
         }
+        //testing
         
         //setup buttons
         roll = (Button) findViewById(R.id.roll_button);
