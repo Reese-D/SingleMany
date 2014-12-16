@@ -232,7 +232,9 @@ public class MainActivity extends Activity {
 			}
 		};
     }
-    public void moveToJail(){
+    
+    
+    public void moveToSquareType(int typeid){
     	currentPlayer= m.currentPlayer;
 		currentPosition = currentPlayer.getPositionInBoard();
 		final Runnable r = new Runnable()
@@ -268,7 +270,7 @@ public class MainActivity extends Activity {
 		
 		//call each move 1 at a time with a delay between them
 		if(!currentPlayer.getHasThrownDice()){
-			while(currentSquare.typeId != 4){
+			while(currentSquare.typeId != typeid){
 				iv.postDelayed(r, delay);
 				delay += MOVETIME;
 				if(currentSquare.typeId == 2){
