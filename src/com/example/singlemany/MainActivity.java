@@ -6,10 +6,13 @@ import java.util.List;
 import java.util.zip.Inflater;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -219,6 +222,7 @@ public class MainActivity extends Activity {
 				for(Square s: p.getProperties())
 					s.setmPaintRim(p.getmPaint());
 		}
+		updateGold();
     }
 
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -243,14 +247,27 @@ public class MainActivity extends Activity {
 	    				Toast.makeText(v.getContext(), "you havn't rolled yet...", Toast.LENGTH_SHORT).show();
 	    			}
 	    		}
+	    		
+	    		if(currentPlayer.getMoney() < 0){
+	    			doRestart(myView.getContext());
+	    		}
 	    	}
     	};
     }
     
     public void endTurn(){
+    	updateGold();
     	Log.i(Tag, "end turn button clicked, manager changePlayer called");
     	m.changePlayer();
 		currentPlayer = m.currentPlayer;
+    }
+    
+    public void updateGold(){
+		//players may exchange cash so update all players money
+		for(int i = 0; i < players.size(); i++){
+			//set gold for players in text
+			setPlayerGold((int) players.get(i).getMoney(), i);
+		}
     }
     
     /**
@@ -271,7 +288,46 @@ public class MainActivity extends Activity {
     }
     
     
-    public void moveToSquareType(int typeId){
+    public void doRestart(Context c) {
+        try {
+            //check if the context is given
+            if (c != null) {
+                //fetch the packagemanager so we can get the default launch activity 
+                // (you can replace this intent with any other activity if you want
+                PackageManager pm = c.getPackageManager();
+                //check if we got the PackageManager
+                if (pm != null) {
+                    //create the intent with the default start activity for your application
+                    Intent mStartActivity = pm.getLaunchIntentForPackage(
+                            c.getPackageName()
+                    );
+                    if (mStartActivity != null) {
+                        mStartActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        //create a pending intent so the application is restarted after System.exit(0) was called. 
+                        // We use an AlarmManager to call this intent in 100ms
+                        int mPendingIntentId = 223344;
+                        PendingIntent mPendingIntent = PendingIntent
+                                .getActivity(c, mPendingIntentId, mStartActivity,
+                                        PendingIntent.FLAG_CANCEL_CURRENT);
+                        AlarmManager mgr = (AlarmManager) c.getSystemService(Context.ALARM_SERVICE);
+                        mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 100, mPendingIntent);
+                        //kill the application
+                        System.exit(0);
+                    } else {
+                        Log.e(Tag, "Was not able to restart application, mStartActivity null");
+                    }
+                } else {
+                    Log.e(Tag, "Was not able to restart application, PM null");
+                }
+            } else {
+                Log.e(Tag, "Was not able to restart application, Context null");
+            }
+        } catch (Exception ex) {
+            Log.e(Tag, "Was not able to restart application");
+        }
+    }
+
+	public void moveToSquareType(int typeId){
 		currentPlayer= m.currentPlayer;
 		currentPosition = currentPlayer.getPositionInBoard();
 		endTurn.setOnClickListener(null);
@@ -295,14 +351,7 @@ public class MainActivity extends Activity {
 				currentPlayer.getImageView().animate().start();
 				// TODO setText("Car at position: " + (currentSquare.name));
 				
-				//players may exchange cash so update all players money
-				for(int i = 0; i < players.size(); i++){
-					//for ever player get their cash and set the corresponding
-					//gold text to the amount
-					setPlayerGold((int) players.get(i).getMoney(), i);
-					/*playersMoney.get(i).setText("Player"+ Integer.toString(i) + " Gold: " 
-							+ Double.toString(players.get(i).getMoney()));*/
-				}
+				updateGold();
 		    }
 		};
 		int delay = 0;
@@ -316,7 +365,7 @@ public class MainActivity extends Activity {
 					currentSquare.duAction(currentPlayer);
 				}
 				endTurn.setOnClickListener(setEndTurnButtonListener());
-				
+				updateGold();
 			}
 		};
 		//call each move 1 at a time with a delay between them
@@ -336,6 +385,7 @@ public class MainActivity extends Activity {
 				}
 			}
 			iv.postDelayed(r2d2, delay + MOVETIME*2);
+			updateGold();
     }
     
     
@@ -361,15 +411,7 @@ public class MainActivity extends Activity {
 				//long oldTime = SystemClock.elapsedRealtime();
 				currentPlayer.getImageView().animate().start();
 				// TODO setText("Car at position: " + (currentSquare.name));
-				
-				//players may exchange cash so update all players money
-				for(int i = 0; i < players.size(); i++){
-					//for ever player get their cash and set the corresponding
-					//gold text to the amount
-					setPlayerGold((int) players.get(i).getMoney(), i);
-					/*playersMoney.get(i).setText("Player"+ Integer.toString(i) + " Gold: " 
-							+ Double.toString(players.get(i).getMoney()));*/
-				}
+				updateGold();
 		    }
 		};
 		int delay = 0;
@@ -383,6 +425,7 @@ public class MainActivity extends Activity {
 					endTurn.setOnClickListener(null);
 				}
 				endTurn.setOnClickListener(setEndTurnButtonListener());
+				updateGold();
 			}
 		};
 		//call each move 1 at a time with a delay between them
@@ -399,6 +442,7 @@ public class MainActivity extends Activity {
 				}
 			}
 			iv.postDelayed(r2d2, delay);
+			updateGold();
 		}
 		
 
