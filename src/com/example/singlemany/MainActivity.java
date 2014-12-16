@@ -38,7 +38,7 @@ public class MainActivity extends Activity {
 	//ArrayLists for the different objects we'll be dealing with
 	ArrayList<Bitmap> playerBitmaps;
 	public ArrayList<Player> players;
-	ArrayList<Square> squares;
+	public ArrayList<Square> squares;
 	ArrayList<TextView> playersMoney;
 	int textSize;
 	View gameBoard;
