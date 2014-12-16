@@ -424,7 +424,20 @@ public class MainActivity extends Activity {
 					if(gameBoard != null && element.getRectF().contains(x,y 
 							+ ((Board)gameBoard).getSquareHeight())){
 						currentlySelectedSquare = element;
-						setText("selected square: " + (currentlySelectedSquare.name));
+						if(currentlySelectedSquare.getTypeId() == 2 || currentlySelectedSquare.getTypeId() == 3 || currentlySelectedSquare.getTypeId() == 4)
+						{
+							setText0("selected square: " + (currentlySelectedSquare.name));
+						}
+						else
+						{
+							setText0("selected square: " + (currentlySelectedSquare.name));
+							setText1("Property's purchase price: " + (((BasicSquare) currentlySelectedSquare).getPurchasePrice()));
+							setText2("Property's house price: " + (((BasicSquare) currentlySelectedSquare).getHousePrice()));
+							setText3("Property's hotel price: " + (((BasicSquare) currentlySelectedSquare).getHotelPrice()));
+							setText4("Property has  " + (((BasicSquare) currentlySelectedSquare).getHouses()) + " and has hotel " + (((BasicSquare) currentlySelectedSquare).getHasHotel()));
+							setText5("Property's rent is: " + (((BasicSquare) currentlySelectedSquare).getBaseRent()));
+							
+						}
 						
 						//TODO remove red and get alpha to work
 						currentlySelectedSquare.getPaint().setAlpha(50);

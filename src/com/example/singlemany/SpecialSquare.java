@@ -20,18 +20,22 @@ public class SpecialSquare extends Square {
 		case 1:
 			player.addMoney(200);
 			action = "You gained 200 dollars";
+			c.makeToast(action, true);
 			break;
 		case 2:
 			player.payMoney(200);
 			action = "You needed to pay taxes 200 dollars";
+			c.makeToast(action, true);
 			break;
 		case 3:
 			player.setIsInJail(true);
 			action = "You need to go to jail for one turn";
+			c.makeToast(action, true);
 			c.moveToSquareType(4);
 			break;
 		case 4:
 			action = "Go to Go square";
+			c.makeToast(action, true);
 			c.moveToSquareType(2);
 			break;
 			
