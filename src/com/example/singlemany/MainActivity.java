@@ -82,6 +82,10 @@ public class MainActivity extends Activity {
 	private TextView information2;
 
 	private TextView information3;
+
+	private TextView information4;
+
+	private TextView information5;
 	
     protected void onCreate(Bundle savedInstanceState) {
         myView = getLayoutInflater().inflate(R.layout.activity_main, null);
@@ -103,10 +107,14 @@ public class MainActivity extends Activity {
         information1 = (TextView) findViewById(R.id.Info1);
         information2 = (TextView) findViewById(R.id.Info2);
         information3 = (TextView) findViewById(R.id.Info3);
+        information4 = (TextView) findViewById(R.id.Info4);
+        information5 = (TextView) findViewById(R.id.Info5);
         information.setTextColor(Color.WHITE);
         information1.setTextColor(Color.WHITE);
         information2.setTextColor(Color.WHITE);
         information3.setTextColor(Color.WHITE);
+        information4.setTextColor(Color.WHITE);
+        information5.setTextColor(Color.WHITE);
         
         gameBoard = (View) findViewById(R.id.Board);
         playersMoney = new ArrayList<TextView>();
@@ -119,8 +127,8 @@ public class MainActivity extends Activity {
         //add the text views to the ArrayList for players cash to be displayed
         playersMoney.add((TextView) findViewById(R.id.player1Gold));
         playersMoney.add((TextView) findViewById(R.id.player2Gold));
-        playersMoney.add((TextView) findViewById(R.id.player3Gold));
-        playersMoney.add((TextView) findViewById(R.id.player4Gold));
+        playersMoney.get(0).setTextColor(Color.WHITE);
+        playersMoney.get(1).setTextColor(Color.WHITE);
         
         //TODO set to actual gold only set 0 for players not in game
         for(TextView x : playersMoney){
@@ -221,8 +229,11 @@ public class MainActivity extends Activity {
     	return new OnClickListener(){
 	    	@Override
 			public void onClick(View v) {
-	    		if(myPlayerNumber == currentPlayerNumber)
+	    		if(currentPlayer.getHasThrownDice())
 	    			endTurn();
+	    		else{
+	    			Toast.makeText(v.getContext(), "you havn't rolled yet...", Toast.LENGTH_SHORT).show();
+	    		}
 	    	}
     	};
     }
@@ -248,72 +259,16 @@ public class MainActivity extends Activity {
     }
     
     
-    public void moveToSquareType(int typeid){
-    	currentPlayer= m.currentPlayer;
-		currentPosition = currentPlayer.getPositionInBoard();
-		final Runnable r = new Runnable()
-		{
-		    public void run() 
-		    { 
-		    	//move player one and set that spot as current position and current square
-
-				currentPlayer.SetPositionInBoard((currentPosition + 1) % squares.size() );
-				currentPosition = currentPlayer.getPositionInBoard();
-				currentSquare = squares.get(currentPosition);
-				
-
-				//animate image view
-				currentPlayer.getImageView().animate().translationX(currentSquare.getX() - (imageWidth/2));
-				currentPlayer.getImageView().animate().translationY(currentSquare.getY() - (imageHeight/2));
-				currentPlayer.getImageView().animate().setDuration(MOVETIME);
-				//long oldTime = SystemClock.elapsedRealtime();
-				currentPlayer.getImageView().animate().start();
-				setText("Car at position: " + (currentSquare.name));
-				
-				//players may exchange cash so update all players money
-				for(int i = 0; i < players.size(); i++){
-					//for ever player get their cash and set the corresponding
-					//gold text to the amount
-					setPlayerGold((int) players.get(i).getMoney(), i);
-					/*playersMoney.get(i).setText("Player"+ Integer.toString(i) + " Gold: " 
-							+ Double.toString(players.get(i).getMoney()));*/
-				}
-		    }
-		};
-		int delay = 0;
-		final Runnable r2d2 = new Runnable(){
-			
-			@Override
-			public void run() {
-				if(currentSquare != null){
-					Log.i(Tag, "called DuAction on current square");
-					currentSquare.duAction(currentPlayer);
-				}
-			}
-		};
-		//call each move 1 at a time with a delay between them
-		if(!currentPlayer.getHasThrownDice()){
-			while(currentSquare.typeId != typeid){
-				iv.postDelayed(r, delay);
-				delay += MOVETIME;
-				if(currentSquare.typeId == 2){
-					currentSquare.duAction(currentPlayer);
-				}
-			}
-			//have the manager move player so it updates
-			iv.postDelayed(r2d2, delay);;
-		}
-    }
-    
-    
-    
-    public void roll(int rolled){
+    public void moveToSquareType(int typeId){
 		currentPlayer= m.currentPlayer;
 		currentPosition = currentPlayer.getPositionInBoard();
+		endTurn.setOnClickListener(null);
+
 		final Runnable r = new Runnable()
 		{
 		    public void run() 
 		    { 
+				endTurn.setOnClickListener(null);
 		    	//move player one and set that spot as current position and current square
 				currentPlayer.SetPositionInBoard((currentPosition + 1) % squares.size() );
 				currentPosition = currentPlayer.getPositionInBoard();
@@ -326,7 +281,74 @@ public class MainActivity extends Activity {
 				currentPlayer.getImageView().animate().setDuration(MOVETIME);
 				//long oldTime = SystemClock.elapsedRealtime();
 				currentPlayer.getImageView().animate().start();
-				setText("Car at position: " + (currentSquare.name));
+				// TODO setText("Car at position: " + (currentSquare.name));
+				
+				//players may exchange cash so update all players money
+				for(int i = 0; i < players.size(); i++){
+					//for ever player get their cash and set the corresponding
+					//gold text to the amount
+					setPlayerGold((int) players.get(i).getMoney(), i);
+					/*playersMoney.get(i).setText("Player"+ Integer.toString(i) + " Gold: " 
+							+ Double.toString(players.get(i).getMoney()));*/
+				}
+		    }
+		};
+		int delay = 0;
+		final Runnable r2d2 = new Runnable(){
+			
+			@Override
+			public void run() {
+				if(currentSquare != null){
+					endTurn.setOnClickListener(null);
+					Log.i(Tag, "called DuAction on current square");
+					currentSquare.duAction(currentPlayer);
+				}
+				endTurn.setOnClickListener(setEndTurnButtonListener());
+				
+			}
+		};
+		//call each move 1 at a time with a delay between them
+		Log.i(Tag, "hasThrownDice value is: " + currentPlayer.getHasThrownDice());
+			Log.d(Tag, "Got to stage 2");
+			Square tempSquare = squares.get(currentPosition);
+			int count = 0;
+			while(tempSquare.typeId != typeId){
+				count++;
+				tempSquare = squares.get((currentPosition + count) % squares.size());
+				rolled--;
+				iv.postDelayed(r, delay);
+				delay += MOVETIME/2;
+				//have the manager move player so it updates
+				if(currentSquare != null && currentSquare.typeId == 2){
+					currentSquare.duAction(currentPlayer);
+				}
+			}
+			iv.postDelayed(r2d2, delay + MOVETIME*2);
+    }
+    
+    
+    
+    public void roll(int rolled){
+		currentPlayer= m.currentPlayer;
+		currentPosition = currentPlayer.getPositionInBoard();
+		final Runnable r = new Runnable()
+		{
+		    public void run() 
+		    { 
+		    	endTurn.setOnClickListener(null);
+		    	//move player one and set that spot as current position and current square
+				currentPlayer.SetPositionInBoard((currentPosition + 1) % squares.size() );
+				currentPosition = currentPlayer.getPositionInBoard();
+				currentSquare = squares.get(currentPosition);
+				Log.i(Tag, "currentSquare is: " + currentSquare);
+
+				//animate image view
+				currentPlayer.getImageView().animate().translationX(currentSquare.getX() - (imageWidth/2));
+				currentPlayer.getImageView().animate().translationY(currentSquare.getY() - (imageHeight/2));
+				currentPlayer.getImageView().animate().setDuration(MOVETIME);
+				//long oldTime = SystemClock.elapsedRealtime();
+				currentPlayer.getImageView().animate().start();
+				// TODO setText("Car at position: " + (currentSquare.name));
 				
 				//players may exchange cash so update all players money
 				for(int i = 0; i < players.size(); i++){
@@ -346,7 +368,9 @@ public class MainActivity extends Activity {
 				if(currentSquare != null){
 					Log.i(Tag, "called DuAction on current square");
 					currentSquare.duAction(currentPlayer);
+					endTurn.setOnClickListener(null);
 				}
+				endTurn.setOnClickListener(setEndTurnButtonListener());
 			}
 		};
 		//call each move 1 at a time with a delay between them
@@ -401,8 +425,23 @@ public class MainActivity extends Activity {
     /** Uses the current color for the text
      * @param s string for new text in center of the screen
      */
-    public void setText(String s){
+    public void setText0(String s){
      	information.setText(s);
+    }
+    public void setText1(String s){
+     	information1.setText(s);
+    }
+    public void setText2(String s){
+     	information2.setText(s);
+    }
+    public void setText3(String s){
+     	information3.setText(s);
+    }
+    public void setText4(String s){
+     	information4.setText(s);
+    }
+    public void setText5(String s){
+     	information5.setText(s);
     }
 
     
@@ -432,7 +471,7 @@ public class MainActivity extends Activity {
 	public void touch(MotionEvent event){
 		//get the x and y of the touch (absolute not relative)
 				float x = event.getX();
-				float y = event.getRawY();
+				float y = event.getY();
 				Square temp = currentlySelectedSquare;
 				
 				//check if the x y is within one of the squares
@@ -440,17 +479,26 @@ public class MainActivity extends Activity {
 					if(gameBoard == null)
 						Log.e(Tag, "Gameboard was null in touch event!");
 					if(gameBoard != null && element.getRectF().contains(x,y 
-							+ ((Board)gameBoard).getSquareHeight())){
+							- ((Board)gameBoard).getSquareHeight())){
 						currentlySelectedSquare = element;
-						setText("selected square: " + (currentlySelectedSquare.name));
+						if(currentlySelectedSquare.getTypeId() == 2 || currentlySelectedSquare.getTypeId() == 3 || currentlySelectedSquare.getTypeId() == 4)
+						{
+							setText0("selected square: " + (currentlySelectedSquare.name));
+						}
+						else
+						{
+							setText0("selected square: " + (currentlySelectedSquare.name));
+							setText1("Property's purchase price: " + (((BasicSquare) currentlySelectedSquare).getPurchasePrice()));
+							setText2("Property's house price: " + (((BasicSquare) currentlySelectedSquare).getHousePrice()));
+							setText3("Property's hotel price: " + (((BasicSquare) currentlySelectedSquare).getHotelPrice()));
+							setText4("Property has  " + (((BasicSquare) currentlySelectedSquare).getHouses()) + " and has hotel " + (((BasicSquare) currentlySelectedSquare).getHasHotel()));
+							setText5("Property's rent is: " + (((BasicSquare) currentlySelectedSquare).getBaseRent()));
+							
+						}
 						
 						//TODO remove red and get alpha to work
 						currentlySelectedSquare.getPaint().setAlpha(50);
-						if(currentPlayerNumber == 0)
-							currentlySelectedSquare.getPaint().setColor(Color.RED);
-						else{
-							currentlySelectedSquare.getPaint().setColor(Color.BLUE);
-						}
+						currentlySelectedSquare.getPaint().setColor(Color.GRAY);
 						if(temp != null){
 							temp.getPaint().setColor(Color.WHITE);
 							temp.getPaint().setAlpha(255);

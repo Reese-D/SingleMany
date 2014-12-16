@@ -75,4 +75,8 @@ public class Square {
 	public void setmPaintRim(Paint mPaintRim) {
 		this.mPaintRim = mPaintRim;
 	}
+	public int getTypeId()
+	{
+		return typeId;
+	}
 }
