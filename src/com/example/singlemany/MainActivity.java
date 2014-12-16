@@ -82,7 +82,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(myView);
 
-        mIntent = new Intent(this, Bluetooth.class);
+        //mIntent = new Intent(this, Bluetooth.class);
 
         
 
