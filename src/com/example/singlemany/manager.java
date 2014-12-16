@@ -210,6 +210,10 @@ playerArray[1].setPostion(boardArray[0]);*/
 	{
 
 		currentPlayer.setHasThrownDice(false);
+		if(currentPlayer.getIsInJail() == true)
+		{
+			currentPlayer.setIsInJail(false);
+		}
 		if(currentPlayer.getId() == 1)
 		{
 			currentPlayer = playerArray.get(1);
@@ -217,17 +221,6 @@ playerArray[1].setPostion(boardArray[0]);*/
 		else
 		{
 			currentPlayer = playerArray.get(0);
-		}
-		
-		if(playerArray.get(0).getIsInJail() == true)
-		{
-			currentPlayer = playerArray.get(1);
-			playerArray.get(0).setIsInJail(false);
-		}
-		else if(playerArray.get(1).getIsInJail() == true)
-		{
-			currentPlayer = playerArray.get(0);
-			playerArray.get(1).setIsInJail(false);
 		}
 		
 	}
