@@ -2,11 +2,13 @@ package com.example.singlemany;
 
 import java.util.ArrayList;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.util.Log;
 
 public class manager {
 
+MainActivity c;
 Square[] boardArray;
 ArrayList<Player> playerArray;
 
@@ -16,82 +18,47 @@ playerArray[1] = player2;*/
 Player currentPlayer;
 
 //GoSquare square1;
-Square square1; //TODO change to gosquare
-BasicSquare square2;
-Square square3;
-BasicSquare square4;
-
-private Square square5;
-
-private Square square6;
-
+private GoSquare square1; //TODO change to gosquare
+private BasicSquare square2;
+private SpecialSquare square3;
+private BasicSquare square4;
+private SpecialSquare square5;
+private SpecialSquare square6;
 private BasicSquare square7;
-
-private Square square8;
-
+private JailSquare square8;
 private BasicSquare square9;
-
 private BasicSquare square10;
-
-private Square square11;
-
+private SpecialSquare square11;
 private BasicSquare square12;
-
-private Square square13;
-
+private SpecialSquare square13;
 private BasicSquare square14;
-
 private BasicSquare square15;
-
-private Square square16;
-
+private SpecialSquare square16;
 private BasicSquare square17;
-
-private Square square18;
-
+private SpecialSquare square18;
 private BasicSquare square19;
-
 private BasicSquare square20;
-
-private Square square21;
-
+private SpecialSquare square21;
 private BasicSquare square22;
-
-private Square square23;
-
+private SpecialSquare square23;
 private BasicSquare square24;
-
 private BasicSquare square25;
-
-private Square square26;
-
+private SpecialSquare square26;
 private BasicSquare square27;
-
 private BasicSquare square28;
-
-private Square square29;
-
+private SpecialSquare square29;
 private BasicSquare square30;
-
-private Square square31;
-
+private SpecialSquare square31;
 private BasicSquare square32;
-
 private BasicSquare square33;
-
 private Square square34;
-
 private BasicSquare square35;
-
 private Square square36;
-
 private Square square37;
-
 private BasicSquare square38;
-
 private Square square39;
-
 private BasicSquare square40;
+
 private Player player1;
 private Player player2;
 public ArrayList<Square> boardArrayList;
@@ -101,12 +68,13 @@ private String Tag = "Manager.java";
 /*playerArray[0].setPostion(boardArray[0]);
 playerArray[1].setPostion(boardArray[0]);*/
 
-	public manager(){
+	public manager(Context c){
 
+		this.c = (MainActivity)c;
 		player1 = new Player();
 		player2 = new Player();
 		playerArray = new ArrayList<Player>();
-		GoSquare square1 = new GoSquare(null);
+		GoSquare square1 = new GoSquare("Go");
 
 		playerArray.add(player1);
 		playerArray.add(player2);
@@ -116,32 +84,32 @@ playerArray[1].setPostion(boardArray[0]);*/
 		currentPlayer = playerArray.get(0);
 		
 		square2 = new BasicSquare(1, 60, "Mediterranean Avenua");
-		square3 = new Square();
+		square3 = new SpecialSquare("Special", c);
 		square4 = new BasicSquare(1, 60, "Baltic Avenue");
-		square5 = new Square();
-		square6 = new Square();
+		square5 = new SpecialSquare("Special", c);
+		square6 = new SpecialSquare("Special", c);
 		square7 = new BasicSquare(2, 100, "Oriental Avenue");
-		square8 = new Square();
+		square8 = new JailSquare("Jail");
 		square9 = new BasicSquare(2, 100, "Vermont Avenue");
 		square10 = new BasicSquare(2, 120, "Connecticut Avenue");
-		square11 = new Square();
+		square11 = new SpecialSquare("Special", c);
 		square12 = new BasicSquare(3, 140, "St. Charles Place");
-		square13 = new Square();
+		square13 = new SpecialSquare("Special", c);
 		square14 = new BasicSquare(3, 140, "States Avenue");
 		square15 = new BasicSquare(3, 160, "Virginia Avenue");
-		square16 = new Square();
+		square16 = new SpecialSquare("Special", c);
 		square17 = new BasicSquare(4, 180, "St. Jame place");
-		square18 = new Square();
+		square18 = new SpecialSquare("Special", c);
 		square19 = new BasicSquare(4, 180, "Tennesee Avenue");
 		square20 = new BasicSquare(4, 200, "New York Avenue");
-		square21 = new Square();
+		square21 = new SpecialSquare("Special", c);
 		square22 = new BasicSquare(5, 220, "Kentucky Avenue");
-		square23 = new Square();
+		square23 = new SpecialSquare("Special", c);
 		square24 = new BasicSquare(5, 220, "Indiana Avenue");
-		square25 = new BasicSquare(5, 240, "Illinois Avenue");
-		square26 = new Square();
-		square27 = new BasicSquare(6, 260, "Atlantic Avenue");
-		square28 = new BasicSquare(6, 260, "Ventinor Avenue");
+		square25 = new BasicSquare(5, 350, "Park Place");
+		square26 = new SpecialSquare("Special", c);
+		square27 = new BasicSquare(6, 400, "Boardwalk");
+		square28 = new BasicSquare(6, 300, "North Carolina Avenue");
 		/*square29 = new Square();
 		square30 = new BasicSquare(6, 280, "Marvin Gardens");
 		square31 = new Square();
@@ -195,9 +163,9 @@ playerArray[1].setPostion(boardArray[0]);*/
 		boardArray[38] = square39;
 		boardArray[39] = square40;*/
 		boardArrayList = new ArrayList<Square>();
-		for(Square c: boardArray){
-			if(c != null)
-				boardArrayList.add(c);
+		for(Square x: boardArray){
+			if(x != null)
+				boardArrayList.add(x);
 		}
 		
 		playerArray.get(0).setPosition(boardArray[0]);

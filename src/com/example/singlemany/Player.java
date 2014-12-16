@@ -98,18 +98,8 @@ public class Player {
 	
 	public int throwDice()
 	{
-		int value;
 		int diceValue1 = (int )(Math.random() * 6 + 1);
-		int diceValue2 = (int )(Math.random() * 6 + 1);
-		value = diceValue1 + diceValue2;
-		if(diceValue1 == diceValue2)
-		{
-			diceValue1 = (int )(Math.random() * 6 + 1);
-			diceValue2 = (int )(Math.random() * 6 + 1);
-			value = value + diceValue1 + diceValue2;
-		}
-		hasThrownDice = true;
-		return value;
+		return diceValue1;
 		
 	}
 	public void buyProperty(BasicSquare property)
