@@ -2,6 +2,7 @@ package com.example.singlemany;
 
 import java.util.ArrayList;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -26,8 +27,10 @@ public class Player {
 	private Paint mPaint;
 	Color playerColor;
 	private String Tag = "Player.java";
+	MainActivity c;
 	
-	public Player(){
+	public Player(Context c){
+		this.c=(MainActivity) c;
 		image = null;
 		amountOfPlayers++;
 		Id = amountOfPlayers;
@@ -94,11 +97,13 @@ public class Player {
 	public void payMoney(double amount)
 	{
 		money = money - amount;
+		c.makeToast(("Paid " + amount), true);
 	}
 	
 	public int throwDice()
 	{
 		int diceValue1 = (int )(Math.random() * 6 + 1);
+		c.makeToast(("Throwed value" + diceValue1), true);
 		return diceValue1;
 		
 	}
@@ -108,7 +113,7 @@ public class Player {
 		if(property.getHasOwner() == false && this.money >= property.getPurchasePrice())
 		{
 			Log.i(Tag , "Purchased property, money was: " + money);
-			money = money - property.getPurchasePrice();
+			payMoney(property.getPurchasePrice());
 			Log.i(Tag , "money is now: " + money);
 			property.setOwner(this);
 			properties.add(property);
@@ -118,16 +123,18 @@ public class Player {
 	{
 		if(property.getOwner() == this && property.getHouses() < 4 && this.money >= property.getHousePrice())
 		{
-			money = money - property.getHousePrice();
+			payMoney(property.getHousePrice());
 			property.buildHouse();
+			c.makeToast("You bought a house on selected property", true);
 		}
 	}
 	public void buyHotel(BasicSquare property)
 	{
 		if(property.getHasHotel() == false && property.getHouses() == 4 && property.getOwner() == this && this.money >= property.getHotelPrice())
 		{
-			money = money - property.getHotelPrice();
+			payMoney(property.getHotelPrice());
 			property.buildHotel();
+			c.makeToast("You bought a hotel on selected property", true);
 		}
 	}
 	public int getId()

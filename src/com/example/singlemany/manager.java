@@ -11,6 +11,7 @@ public class manager {
 MainActivity c;
 Square[] boardArray;
 ArrayList<Player> playerArray;
+int timeinjail = 0;
 
 /*playerArray[0] = player1;
 playerArray[1] = player2;*/
@@ -71,8 +72,8 @@ playerArray[1].setPostion(boardArray[0]);*/
 	public manager(Context c){
 
 		this.c = (MainActivity)c;
-		player1 = new Player();
-		player2 = new Player();
+		player1 = new Player(c);
+		player2 = new Player(c);
 		playerArray = new ArrayList<Player>();
 		GoSquare square1 = new GoSquare("Go");
 
@@ -83,33 +84,33 @@ playerArray[1].setPostion(boardArray[0]);*/
 
 		currentPlayer = playerArray.get(0);
 		
-		square2 = new BasicSquare(1, 60, "Mediterranean Avenua");
+		square2 = new BasicSquare(1, 60, "Mediterranean Avenua", c);
 		square3 = new SpecialSquare("Special", c);
-		square4 = new BasicSquare(1, 60, "Baltic Avenue");
+		square4 = new BasicSquare(1, 60, "Baltic Avenue", c);
 		square5 = new SpecialSquare("Special", c);
 		square6 = new SpecialSquare("Special", c);
-		square7 = new BasicSquare(2, 100, "Oriental Avenue");
+		square7 = new BasicSquare(2, 100, "Oriental Avenue", c);
 		square8 = new JailSquare("Jail");
-		square9 = new BasicSquare(2, 100, "Vermont Avenue");
-		square10 = new BasicSquare(2, 120, "Connecticut Avenue");
+		square9 = new BasicSquare(2, 100, "Vermont Avenue", c);
+		square10 = new BasicSquare(2, 120, "Connecticut Avenue", c);
 		square11 = new SpecialSquare("Special", c);
-		square12 = new BasicSquare(3, 140, "St. Charles Place");
+		square12 = new BasicSquare(3, 140, "St. Charles Place", c);
 		square13 = new SpecialSquare("Special", c);
-		square14 = new BasicSquare(3, 140, "States Avenue");
-		square15 = new BasicSquare(3, 160, "Virginia Avenue");
+		square14 = new BasicSquare(3, 140, "States Avenue", c);
+		square15 = new BasicSquare(3, 160, "Virginia Avenue", c);
 		square16 = new SpecialSquare("Special", c);
-		square17 = new BasicSquare(4, 180, "St. Jame place");
+		square17 = new BasicSquare(4, 180, "St. Jame place", c);
 		square18 = new SpecialSquare("Special", c);
-		square19 = new BasicSquare(4, 180, "Tennesee Avenue");
-		square20 = new BasicSquare(4, 200, "New York Avenue");
+		square19 = new BasicSquare(4, 180, "Tennesee Avenue", c);
+		square20 = new BasicSquare(4, 200, "New York Avenue", c);
 		square21 = new SpecialSquare("Special", c);
-		square22 = new BasicSquare(5, 220, "Kentucky Avenue");
+		square22 = new BasicSquare(5, 220, "Kentucky Avenue", c);
 		square23 = new SpecialSquare("Special", c);
-		square24 = new BasicSquare(5, 220, "Indiana Avenue");
-		square25 = new BasicSquare(5, 350, "Park Place");
+		square24 = new BasicSquare(5, 220, "Indiana Avenue", c);
+		square25 = new BasicSquare(5, 350, "Park Place", c);
 		square26 = new SpecialSquare("Special", c);
-		square27 = new BasicSquare(6, 400, "Boardwalk");
-		square28 = new BasicSquare(6, 300, "North Carolina Avenue");
+		square27 = new BasicSquare(6, 400, "Boardwalk", c);
+		square28 = new BasicSquare(6, 300, "North Carolina Avenue", c);
 		/*square29 = new Square();
 		square30 = new BasicSquare(6, 280, "Marvin Gardens");
 		square31 = new Square();
@@ -210,9 +211,14 @@ playerArray[1].setPostion(boardArray[0]);*/
 	{
 
 		currentPlayer.setHasThrownDice(false);
-		if(currentPlayer.getIsInJail() == true)
+		if(currentPlayer.getIsInJail() == true && timeinjail == 4)
 		{
 			currentPlayer.setIsInJail(false);
+			timeinjail = 0;
+		}
+		else
+		{
+			timeinjail++;
 		}
 		if(currentPlayer.getId() == 1)
 		{

@@ -1,5 +1,6 @@
 package com.example.singlemany;
 
+import android.content.Context;
 import android.graphics.Color;
 
 public class BasicSquare extends Square{
@@ -9,11 +10,12 @@ public class BasicSquare extends Square{
 	double baseRent; 
 	private Player owner;
 	private boolean hasHotel, hasMaxHouses, hasOwner;
+	MainActivity c;
 	
 
 	
 	
-	public BasicSquare(int monopoly, int purchasePrice, String name)
+	public BasicSquare(int monopoly, int purchasePrice, String name, Context c)
 	{
 		this.monopoly = monopoly;
 		this.purchasePrice = purchasePrice;
@@ -26,6 +28,7 @@ public class BasicSquare extends Square{
 		houses = 0;
 		super.setName(name);
 		super.typeId = 1;
+		this.c=(MainActivity)c;
 		
 
 		
@@ -122,6 +125,7 @@ public class BasicSquare extends Square{
 		{
 			double rent = this.getBaseRent();
 			owner.addMoney(rent);
+			c.makeToast("You need to pay rent for the owner of this property", true);
 			player.payMoney(rent);
 		}
 		
