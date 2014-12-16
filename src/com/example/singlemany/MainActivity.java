@@ -485,6 +485,11 @@ public class MainActivity extends Activity {
 						if(currentlySelectedSquare.getTypeId() == 2 || currentlySelectedSquare.getTypeId() == 3 || currentlySelectedSquare.getTypeId() == 4)
 						{
 							setText0("selected square: " + (currentlySelectedSquare.name));
+							setText1("");
+							setText2("");
+							setText3("");
+							setText4("");
+							setText5("");
 						}
 						else
 						{
