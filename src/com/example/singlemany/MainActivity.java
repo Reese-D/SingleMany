@@ -51,7 +51,7 @@ public class MainActivity extends Activity {
 	final int IMAGESCALE = 15;
 	final int MOVETIME = 500;
 	int rolled, currentPosition;
-	public Player currentPlayer;
+	public volatile Player currentPlayer;
 	public Square currentlySelectedSquare;
 	BluetoothDevice mBluetoothDevice;
 	private final int bluetoothRequestCode = 1241;
@@ -70,7 +70,7 @@ public class MainActivity extends Activity {
 	public int currentPlayerNumber;
 	
 	Intent mIntent;
-	Square currentSquare;
+	volatile Square currentSquare;
 	Connection myConnection;
 
 	private BluetoothSocket mBluetoothSocket;
@@ -281,7 +281,16 @@ public class MainActivity extends Activity {
 		    }
 		};
 		int delay = 0;
-		
+		final Runnable r2d2 = new Runnable(){
+			
+			@Override
+			public void run() {
+				if(currentSquare != null){
+					Log.i(Tag, "called DuAction on current square");
+					currentSquare.duAction(currentPlayer);
+				}
+			}
+		};
 		//call each move 1 at a time with a delay between them
 		if(!currentPlayer.getHasThrownDice()){
 			while(currentSquare.typeId != typeid){
@@ -292,7 +301,7 @@ public class MainActivity extends Activity {
 				}
 			}
 			//have the manager move player so it updates
-			m.movePlayer();
+			iv.postDelayed(r2d2, delay);;
 		}
     }
     
@@ -306,11 +315,10 @@ public class MainActivity extends Activity {
 		    public void run() 
 		    { 
 		    	//move player one and set that spot as current position and current square
-				Square currentSquare;
 				currentPlayer.SetPositionInBoard((currentPosition + 1) % squares.size() );
 				currentPosition = currentPlayer.getPositionInBoard();
 				currentSquare = squares.get(currentPosition);
-				
+				Log.i(Tag, "currentSquare is: " + currentSquare);
 
 				//animate image view
 				currentPlayer.getImageView().animate().translationX(currentSquare.getX() - (imageWidth/2));
@@ -331,7 +339,16 @@ public class MainActivity extends Activity {
 		    }
 		};
 		int delay = 0;
-		
+		final Runnable r2d2 = new Runnable(){
+			
+			@Override
+			public void run() {
+				if(currentSquare != null){
+					Log.i(Tag, "called DuAction on current square");
+					currentSquare.duAction(currentPlayer);
+				}
+			}
+		};
 		//call each move 1 at a time with a delay between them
 		Log.i(Tag, "hasThrownDice value is: " + currentPlayer.getHasThrownDice());
 		if(!currentPlayer.getHasThrownDice()){
@@ -345,8 +362,9 @@ public class MainActivity extends Activity {
 					currentSquare.duAction(currentPlayer);
 				}
 			}
-			m.movePlayer();
+			iv.postDelayed(r2d2, delay);
 		}
+		
 
     }
     
