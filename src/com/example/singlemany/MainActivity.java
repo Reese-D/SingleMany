@@ -70,7 +70,7 @@ public class MainActivity extends Activity {
 	public int currentPlayerNumber;
 	
 	Intent mIntent;
-	
+	Square currentSquare;
 	Connection myConnection;
 
 	private BluetoothSocket mBluetoothSocket;
@@ -232,6 +232,52 @@ public class MainActivity extends Activity {
 			}
 		};
     }
+    public void moveToJail(){
+    	currentPlayer= m.currentPlayer;
+		currentPosition = currentPlayer.getPositionInBoard();
+		final Runnable r = new Runnable()
+		{
+		    public void run() 
+		    { 
+		    	//move player one and set that spot as current position and current square
+
+				currentPlayer.SetPositionInBoard((currentPosition + 1) % squares.size() );
+				currentPosition = currentPlayer.getPositionInBoard();
+				currentSquare = squares.get(currentPosition);
+				
+
+				//animate image view
+				currentPlayer.getImageView().animate().translationX(currentSquare.getX() - (imageWidth/2));
+				currentPlayer.getImageView().animate().translationY(currentSquare.getY() - (imageHeight/2));
+				currentPlayer.getImageView().animate().setDuration(MOVETIME);
+				//long oldTime = SystemClock.elapsedRealtime();
+				currentPlayer.getImageView().animate().start();
+				setText("Car at position: " + (currentSquare.name));
+				
+				//players may exchange cash so update all players money
+				for(int i = 0; i < players.size(); i++){
+					//for ever player get their cash and set the corresponding
+					//gold text to the amount
+					setPlayerGold((int) players.get(i).getMoney(), i);
+					/*playersMoney.get(i).setText("Player"+ Integer.toString(i) + " Gold: " 
+							+ Double.toString(players.get(i).getMoney()));*/
+				}
+		    }
+		};
+		int delay = 0;
+		
+		//call each move 1 at a time with a delay between them
+		if(currentPlayer.getHasThrownDice()){
+			while(currentSquare.typeId != 4){
+				iv.postDelayed(r, delay);
+				delay += MOVETIME;
+				//have the manager move player so it updates
+				m.movePlayer();
+			}
+		}
+    }
+    
+    
     
     public void roll(int rolled){
 		currentPlayer= m.currentPlayer;
