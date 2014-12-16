@@ -115,17 +115,10 @@ public class Board extends SurfaceView implements SurfaceHolder.Callback {
 		}
 	}
 	
-	public int getScreenWidth(){
-		if(mCanvas != null)
-			return mCanvas.getWidth();
-		Log.w(Tag, "ScreenWidth returned -1 because canvas was null...");
-		return -1;
-	}
-	
-	public int getScreenHeight(){
-		if(mCanvas != null)
-			return mCanvas.getHeight();
-		Log.w(Tag , "ScreenHeight returned -1 because canvas was null...");
+	public int getSquareHeight(){
+		if(thread != null)
+			return thread.squareHeight;
+		Log.w(Tag , "ScreenHeight returned -1 because thread was null...");
 		return -1;
 	}
 	

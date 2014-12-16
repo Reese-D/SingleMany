@@ -44,7 +44,7 @@ public class mThread extends Thread{
 	//public ArrayList<RectF> drawnSquares = new ArrayList<RectF>();
 	
 	//size of each square
-	private int squareHeight;
+	public int squareHeight;
 	private int squareWidth;
 	final private int SIDES = 4;
 	

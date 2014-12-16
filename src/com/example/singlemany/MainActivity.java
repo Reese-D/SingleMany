@@ -87,7 +87,7 @@ public class MainActivity extends Activity {
         
 
         //create a new manager instance, the logical manager of gameflow
-        m = new manager();
+        m = new manager(this);
         
         //instantiate some of our resources and arrays
         squares = m.boardArrayList;
@@ -130,7 +130,7 @@ public class MainActivity extends Activity {
 
         //set some defaults to the board to make it look nicer
         ((Board) gameBoard).setTextSize(textSize);
-    	information.setTextColor(Color.BLACK);
+    	information.setTextColor(Color.WHITE);
 
     	//TODO change if the player array or square array is conceived differently
     	((Board) gameBoard).setupBoard(players, squares);
@@ -407,17 +407,17 @@ public class MainActivity extends Activity {
 				for(Square element :squares){
 					if(gameBoard == null)
 						Log.e(Tag, "Gameboard was null in touch event!");
-					if(gameBoard != null && element.getRectF().contains(x/gameBoard.getWidth()
-												, y/gameBoard.getHeight())){
+					if(gameBoard != null && element.getRectF().contains(x,y 
+							+ ((Board)gameBoard).getSquareHeight())){
 						currentlySelectedSquare = element;
-						setText("selected square: " + (element.name));
+						setText("selected square: " + (currentlySelectedSquare.name));
 						
 						//TODO remove red and get alpha to work
-						element.getPaint().setAlpha(50);
+						currentlySelectedSquare.getPaint().setAlpha(50);
 						if(currentPlayerNumber == 0)
-							element.getPaint().setColor(Color.RED);
+							currentlySelectedSquare.getPaint().setColor(Color.RED);
 						else{
-							element.getPaint().setColor(Color.BLUE);
+							currentlySelectedSquare.getPaint().setColor(Color.BLUE);
 						}
 						if(temp != null){
 							temp.getPaint().setColor(Color.WHITE);
