@@ -106,7 +106,7 @@ playerArray[1].setPostion(boardArray[0]);*/
 		player1 = new Player();
 		player2 = new Player();
 		playerArray = new ArrayList<Player>();
-		GoSquare square1 = new GoSquare();
+		GoSquare square1 = new GoSquare(null);
 
 		playerArray.add(player1);
 		playerArray.add(player2);
@@ -242,6 +242,27 @@ playerArray[1].setPostion(boardArray[0]);*/
 
 	public void changePlayer()
 	{
+
+		
+		if(currentPlayer.getId() == 1)
+		{
+			currentPlayer = playerArray.get(1);
+		}
+		else
+		{
+			currentPlayer = playerArray.get(0);
+		}
+		
+		if(playerArray.get(0).getIsInJail() == true)
+		{
+			currentPlayer = playerArray.get(1);
+			playerArray.get(0).setIsInJail(false);
+		}
+		else if(playerArray.get(1).getIsInJail() == true)
+		{
+			currentPlayer = playerArray.get(0);
+			playerArray.get(1).setIsInJail(false);
+		}
 		
 	}
 
