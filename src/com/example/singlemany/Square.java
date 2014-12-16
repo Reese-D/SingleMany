@@ -17,7 +17,7 @@ public class Square {
 	
 	public Square(){
 		//set paint defaults
-		mPaint.setColor(Color.BLUE);
+		mPaint.setColor(Color.WHITE);
 		mPaint.setAntiAlias(true);
 		mPaint.setAlpha(255);
 		mPaintRim.setStyle(Paint.Style.STROKE);

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -16,6 +17,7 @@ public class Board extends SurfaceView implements SurfaceHolder.Callback {
     SurfaceHolder holder;
     Context mContext;
     Canvas mCanvas;
+	private String Tag = "Board.java";
     
     public Board(Context context, AttributeSet attributeSet) {
 		super(context, attributeSet);
@@ -111,6 +113,20 @@ public class Board extends SurfaceView implements SurfaceHolder.Callback {
 				//do nothing
 			}
 		}
+	}
+	
+	public int getScreenWidth(){
+		if(mCanvas != null)
+			return mCanvas.getWidth();
+		Log.w(Tag, "ScreenWidth returned -1 because canvas was null...");
+		return -1;
+	}
+	
+	public int getScreenHeight(){
+		if(mCanvas != null)
+			return mCanvas.getHeight();
+		Log.w(Tag , "ScreenHeight returned -1 because canvas was null...");
+		return -1;
 	}
 	
 	/**

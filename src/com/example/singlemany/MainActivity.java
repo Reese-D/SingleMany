@@ -130,7 +130,7 @@ public class MainActivity extends Activity {
 
         //set some defaults to the board to make it look nicer
         ((Board) gameBoard).setTextSize(textSize);
-    	information.setTextColor(Color.WHITE);
+    	information.setTextColor(Color.BLACK);
 
     	//TODO change if the player array or square array is conceived differently
     	((Board) gameBoard).setupBoard(players, squares);
@@ -319,6 +319,7 @@ public class MainActivity extends Activity {
 		int delay = 0;
 		
 		//call each move 1 at a time with a delay between them
+		Log.i(Tag, "hasThrownDice value is: " + currentPlayer.getHasThrownDice());
 		if(!currentPlayer.getHasThrownDice()){
 			currentPlayer.setHasThrownDice(true);
 			while(rolled > 0){
@@ -326,7 +327,7 @@ public class MainActivity extends Activity {
 				iv.postDelayed(r, delay);
 				delay += MOVETIME;
 				//have the manager move player so it updates
-				if(currentSquare.typeId == 2){
+				if(currentSquare != null && currentSquare.typeId == 2){
 					currentSquare.duAction(currentPlayer);
 				}
 			}
@@ -398,22 +399,27 @@ public class MainActivity extends Activity {
 	
 	public void touch(MotionEvent event){
 		//get the x and y of the touch (absolute not relative)
-				float x = event.getX()*event.getXPrecision();
-				float y = event.getRawY()*event.getYPrecision();
-				event.getXPrecision();
+				float x = event.getX();
+				float y = event.getRawY();
 				Square temp = currentlySelectedSquare;
 				
 				//check if the x y is within one of the squares
 				for(Square element :squares){
-					if(element.getRectF().contains(x, y)){
+					if(gameBoard == null)
+						Log.e(Tag, "Gameboard was null in touch event!");
+					if(gameBoard != null && element.getRectF().contains(x/gameBoard.getWidth(), y/gameBoard.getHeight())){
 						currentlySelectedSquare = element;
 						setText("selected square: " + (element.name));
 						
 						//TODO remove red and get alpha to work
 						element.getPaint().setAlpha(50);
-						element.getPaint().setColor(Color.RED);
+						if(currentPlayerNumber == 0)
+							element.getPaint().setColor(Color.RED);
+						else{
+							element.getPaint().setColor(Color.BLUE);
+						}
 						if(temp != null){
-							temp.getPaint().setColor(Color.BLUE);
+							temp.getPaint().setColor(Color.WHITE);
 							temp.getPaint().setAlpha(255);
 						}
 						return;

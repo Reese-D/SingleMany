@@ -108,7 +108,6 @@ public class Player {
 			diceValue2 = (int )(Math.random() * 6 + 1);
 			value = value + diceValue1 + diceValue2;
 		}
-		hasThrownDice = true;
 		return value;
 		
 	}
