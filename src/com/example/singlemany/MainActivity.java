@@ -200,7 +200,11 @@ public class MainActivity extends Activity {
 		return new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				buyProperty();
+				if(!currentPlayer.getIsInJail())
+					buyProperty();
+				else{
+					makeToast("You can't buy properties while in jail", false);
+				}
 			}
 		};
 	}
@@ -233,7 +237,11 @@ public class MainActivity extends Activity {
 	    		if(currentPlayer.getHasThrownDice())
 	    			endTurn();
 	    		else{
-	    			Toast.makeText(v.getContext(), "you havn't rolled yet...", Toast.LENGTH_SHORT).show();
+	    			if(currentPlayer.getIsInJail())
+	    				endTurn();
+	    			else{
+	    				Toast.makeText(v.getContext(), "you havn't rolled yet...", Toast.LENGTH_SHORT).show();
+	    			}
 	    		}
 	    	}
     	};
@@ -253,8 +261,11 @@ public class MainActivity extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-				if(myPlayerNumber == currentPlayerNumber)
+				if(!currentPlayer.getIsInJail()){
 					roll(currentPlayer.throwDice());
+				}else{
+					makeToast("You're in Jail, you can't move or make purchases", false);
+				}
 			}
 		};
     }
