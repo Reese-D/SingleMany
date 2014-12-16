@@ -35,7 +35,6 @@ public class Player {
 		hasThrownDice = false;
 		positionInBoard = 0;
 		movingToPosition = 0;
-<<<<<<< HEAD
 		mPaint = new Paint();
 		mPaint.setStyle(Paint.Style.STROKE);
 		mPaint.setStrokeWidth(2f);
@@ -43,9 +42,7 @@ public class Player {
 		mPaint.setAlpha(255);
 		//defualt color red, should be set manually however
 		mPaint.setColor(Color.RED);
-=======
 		isInJail = false;
->>>>>>> 62f64e5ab48e2233c60bb81b3efe4c79f0f7968a
 		
 		//position = 0; //TODO position is square type, change this
 	}
