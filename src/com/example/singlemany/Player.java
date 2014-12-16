@@ -99,7 +99,19 @@ public class Player {
 	public int throwDice()
 	{
 		int diceValue1 = (int )(Math.random() * 6 + 1);
+<<<<<<< HEAD
 		return diceValue1;
+=======
+		int diceValue2 = (int )(Math.random() * 6 + 1);
+		value = diceValue1 + diceValue2;
+		if(diceValue1 == diceValue2)
+		{
+			diceValue1 = (int )(Math.random() * 6 + 1);
+			diceValue2 = (int )(Math.random() * 6 + 1);
+			value = value + diceValue1 + diceValue2;
+		}
+		return value;
+>>>>>>> 0a33252c0779544e9e62968f57274119066f8827
 		
 	}
 	public void buyProperty(BasicSquare property)

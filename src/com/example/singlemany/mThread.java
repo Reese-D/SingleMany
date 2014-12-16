@@ -135,7 +135,7 @@ public class mThread extends Thread{
 	 */
 	private void doDraw(Canvas c){
 
-
+		c.drawColor(Color.BLACK);
 		for(Square element : drawnSquares){
 			
 			//get the squares paint and rectangular dimensions
