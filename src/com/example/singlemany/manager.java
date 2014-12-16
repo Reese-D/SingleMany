@@ -11,7 +11,7 @@ public class manager {
 MainActivity c;
 Square[] boardArray;
 ArrayList<Player> playerArray;
-int timeinjail = 0;
+
 
 /*playerArray[0] = player1;
 playerArray[1] = player2;*/
@@ -199,9 +199,9 @@ playerArray[1].setPostion(boardArray[0]);*/
 		
 		if(s.typeId == 1){
 			Log.i(Tag , "buy house/hotel called");
-			currentPlayer.buyProperty((BasicSquare)s);
-			currentPlayer.buyHouse((BasicSquare)s);
 			currentPlayer.buyHotel((BasicSquare)s);
+			currentPlayer.buyHouse((BasicSquare)s);
+			currentPlayer.buyProperty((BasicSquare)s);
 		}
 	}
 	
@@ -211,14 +211,14 @@ playerArray[1].setPostion(boardArray[0]);*/
 	{
 
 		currentPlayer.setHasThrownDice(false);
-		if(currentPlayer.getIsInJail() == true && timeinjail == 4)
+		if(currentPlayer.getIsInJail() == true && currentPlayer.getTimeInJail() == 2)
 		{
 			currentPlayer.setIsInJail(false);
-			timeinjail = 0;
+			currentPlayer.setTimeInJail(0);
 		}
 		else
 		{
-			timeinjail++;
+			currentPlayer.increaseTimeInJail();
 		}
 		if(currentPlayer.getId() == 1)
 		{

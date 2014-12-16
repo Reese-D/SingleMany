@@ -28,6 +28,7 @@ public class Player {
 	Color playerColor;
 	private String Tag = "Player.java";
 	MainActivity c;
+	private int timeInJail;
 	
 	public Player(Context c){
 		this.c=(MainActivity) c;
@@ -46,6 +47,7 @@ public class Player {
 		//defualt color red, should be set manually however
 		mPaint.setColor(Color.RED);
 		isInJail = false;
+		timeInJail = 0;
 		
 		//position = 0; //TODO position is square type, change this
 	}
@@ -56,6 +58,18 @@ public class Player {
 	public void setIsInJail(boolean option)
 	{
 		isInJail = option;
+	}
+	public int getTimeInJail()
+	{
+		return timeInJail;
+	}
+	public void increaseTimeInJail()
+	{
+		timeInJail++;
+	}
+	public void setTimeInJail(int amount)
+	{
+		timeInJail = amount;
 	}
 	
 	public float getxActual(){
