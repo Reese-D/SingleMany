@@ -17,6 +17,7 @@ public class Player {
 	private ArrayList<BasicSquare> properties = new ArrayList();
 	private double money;
 	private boolean hasThrownDice;
+	private boolean isInJail;
 	private Bitmap image;
 	private ImageView imageView;
 	private float xActual, yActual;
@@ -30,8 +31,17 @@ public class Player {
 		hasThrownDice = false;
 		positionInBoard = 0;
 		movingToPosition = 0;
+		isInJail = false;
 		
 		//position = 0; //TODO position is square type, change this
+	}
+	public boolean getIsInJail()
+	{
+		return isInJail;
+	}
+	public void setIsInJail(boolean option)
+	{
+		isInJail = option;
 	}
 	
 	public float getxActual(){
