@@ -4,7 +4,9 @@ import java.util.ArrayList;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.media.Image;
+import android.util.Log;
 import android.widget.ImageView;
 
 public class Player {
@@ -20,7 +22,9 @@ public class Player {
 	private Bitmap image;
 	private ImageView imageView;
 	private float xActual, yActual;
+	private Paint mPaint;
 	Color playerColor;
+	private String Tag = "Player.java";
 	
 	public Player(){
 		image = null;
@@ -30,6 +34,13 @@ public class Player {
 		hasThrownDice = false;
 		positionInBoard = 0;
 		movingToPosition = 0;
+		mPaint = new Paint();
+		mPaint.setStyle(Paint.Style.STROKE);
+		mPaint.setStrokeWidth(2f);
+		mPaint.setAntiAlias(true);
+		mPaint.setAlpha(255);
+		//defualt color red, should be set manually however
+		mPaint.setColor(Color.RED);
 		
 		//position = 0; //TODO position is square type, change this
 	}
@@ -93,9 +104,12 @@ public class Player {
 	}
 	public void buyProperty(BasicSquare property)
 	{
+		Log.i(Tag , "attempted to purchase property");
 		if(property.getHasOwner() == false && this.money >= property.getPurchasePrice())
 		{
+			Log.i(Tag , "Purchased property, money was: " + money);
 			money = money - property.getPurchasePrice();
+			Log.i(Tag , "money is now: " + money);
 			property.setOwner(this);
 			properties.add(property);
 		}
@@ -142,6 +156,7 @@ public class Player {
 	}
 	public void setHasThrownDice(boolean set)
 	{
+		Log.i(Tag, "current player has thrown dice: "+ set);
 		hasThrownDice = set;
 	}
 	public int getPositionInBoard(){
@@ -161,6 +176,14 @@ public class Player {
 
 	public void setImageView(ImageView imageView) {
 		this.imageView = imageView;
+	}
+
+	public Paint getmPaint() {
+		return mPaint;
+	}
+
+	public void setmPaintColor(int color) {
+		mPaint.setColor(color);
 	}
 	
 }

@@ -12,6 +12,7 @@ public class Square {
 	protected float y;
 	//Add some variables to comply with mThread class
 	protected Paint mPaint = new Paint();
+	protected Paint mPaintRim = new Paint();
 	protected RectF mRectF = new RectF();
 	
 	public Square(){
@@ -19,6 +20,10 @@ public class Square {
 		mPaint.setColor(Color.BLUE);
 		mPaint.setAntiAlias(true);
 		mPaint.setAlpha(255);
+		mPaintRim.setStyle(Paint.Style.STROKE);
+		mPaintRim.setStrokeWidth(2f);
+		mPaintRim.setAntiAlias(true);
+		mPaintRim.setAlpha(255);
 	}
 	public void duAction(Player player)
 	{
@@ -62,5 +67,12 @@ public class Square {
 	
 	public void setName(String s) {
 		name = s;
+	}
+	
+	public Paint getmPaintRim() {
+		return mPaintRim;
+	}
+	public void setmPaintRim(Paint mPaintRim) {
+		this.mPaintRim = mPaintRim;
 	}
 }

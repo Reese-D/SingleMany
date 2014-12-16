@@ -142,12 +142,19 @@ public class mThread extends Thread{
 			//Paint myColor = setColor(((Square)element).getPaint().getColor());
 			Paint myColor = element.getPaint();
 			RectF theDrawable = ((Square) element).getRectF();
-			
+			int i;
 			//draw the rectangle
+			if(theDrawable == null){
+				i = 0;
+			}
+			if(myColor == null)
+				i = 1;
+			if(c == null)
+				i = 2;
 			c.drawRoundRect(theDrawable, 25f, 25f, myColor);
 			
-			//change color to black and draw the border around the square
-			myColor = setBorder(Color.BLACK);
+			//get paint for border and draw it
+			myColor = element.getmPaintRim();
 			c.drawRoundRect(theDrawable, 25f, 25f, myColor);
 			
 			//get the name so we can draw it on the square

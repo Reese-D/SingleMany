@@ -8,8 +8,9 @@ public class AccessGlobal{
 	private static BluetoothSocket mSocket;
 	private static AccessGlobal mGlobalSingleton;
 	public static final int CONNECTED_AS_CLIENT = 45;
-    public static UUID mUUID = UUID.fromString("5ee597ee-3269-4840-a741-8539ee94859a");
+    public static final UUID mUUID = UUID.fromString("5ee597ee-3269-4840-a741-8539ee94859a");
     public static String returnedDevices = "returned";
+    
 	private AccessGlobal(){
 		mSocket = null;
 	}

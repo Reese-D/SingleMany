@@ -15,6 +15,8 @@ public class Connection extends Thread{
 	protected MainActivity theMain;
 	protected ArrayList<Player> players;
 	protected Button roll;
+	protected int myPlayerNumber;
+	protected int currentPlayerNumber;
 	
 	//create variables to read and write from stream
 	protected static final int ROLL_ACTION = 1;
@@ -44,6 +46,8 @@ public class Connection extends Thread{
 		theMain = (MainActivity) c;
 		players = theMain.players;
 		roll = theMain.roll;
+		myPlayerNumber = theMain.myPlayerNumber;
+		currentPlayerNumber = theMain.currentPlayerNumber;
 		
 		//initialize sockets and streams
 		mSocket = b;
@@ -61,8 +65,8 @@ public class Connection extends Thread{
         mOutStream = tmpOut;
 	}
 	
-	protected void movePlayer(){
-		theMain.roll();
+	protected void movePlayer(int r){
+		theMain.roll(r);
 	}
 	
 	protected void endTurn(){
@@ -93,7 +97,7 @@ public class Connection extends Thread{
                 bytes = mInStream.read(buffer);
                 switch (bytes){
                 case ROLL_ACTION:
-                	movePlayer();
+                	movePlayer(buffer[1]);
                 	break;
                 case END_TURN_ACTION:
                 	endTurn();

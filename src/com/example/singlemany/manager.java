@@ -2,6 +2,9 @@ package com.example.singlemany;
 
 import java.util.ArrayList;
 
+import android.graphics.Color;
+import android.util.Log;
+
 public class manager {
 
 Square[] boardArray;
@@ -92,6 +95,7 @@ private BasicSquare square40;
 private Player player1;
 private Player player2;
 public ArrayList<Square> boardArrayList;
+private String Tag = "Manager.java";
 
 
 /*playerArray[0].setPostion(boardArray[0]);
@@ -198,6 +202,9 @@ playerArray[1].setPostion(boardArray[0]);*/
 		
 		playerArray.get(0).setPosition(boardArray[0]);
 		playerArray.get(1).setPosition(boardArray[0]);
+		
+		playerArray.get(0).setmPaintColor(Color.RED);
+		playerArray.get(1).setmPaintColor(Color.BLUE);
 	}
 	//To be called when player hits throw dice button
 	public void movePlayer()
@@ -222,17 +229,17 @@ playerArray[1].setPostion(boardArray[0]);*/
 	
 	public void Buy(Square s)
 	{
-
-		//can only buy property if you land on it
-		if(currentPlayer.getPosition().typeId == 1)
-			currentPlayer.buyProperty((BasicSquare)currentPlayer.getPosition());
+		
 		if(s.typeId == 1){
+			Log.i(Tag , "buy house/hotel called");
+			currentPlayer.buyProperty((BasicSquare)s);
 			currentPlayer.buyHouse((BasicSquare)s);
 			currentPlayer.buyHotel((BasicSquare)s);
 		}
 	}
 	
 	//To be called when player clicks End turn button
+
 	public void changePlayer()
 	{
 		

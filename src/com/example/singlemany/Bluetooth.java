@@ -3,6 +3,8 @@ package com.example.singlemany;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Set;
+import java.util.UUID;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
@@ -16,6 +18,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -28,8 +31,7 @@ import android.widget.AdapterView.OnItemClickListener;
 
 public class Bluetooth extends Activity{
 	int REQUEST_ENABLE_BT = 5;
-    private String EXTRA_DEVICE_ADDRESS = "com.example.singlemany.ExtraDevices";
-    
+	private String Tag = "Bluetooth.java";
 	
 	//Create the array and strings to be displayed in our ListView
 	BluetoothAdapter mBluetoothAdapter;
@@ -49,7 +51,19 @@ public class Bluetooth extends Activity{
 		
         //initialize array to see which devices are selected (using mac address)
         selected = new ArrayList<String>();
-
+		//get the local bluetooth adapter
+		mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+		
+		//Try to enable bluetooth
+		if (mBluetoothAdapter == null) {
+			// Device does not support Bluetooth TODO handle
+		}else{
+			if (!mBluetoothAdapter.isEnabled()) {
+			    Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+			    startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+			}
+		}
+		
 		Thread m = new Thread(makeRunnable(this));
 		m.start();
         // Set result CANCELED in case the user backs out
@@ -79,18 +93,7 @@ public class Bluetooth extends Activity{
 		mListView.setOnItemClickListener(mDeviceClickListener);
 		mListView.setAdapter(mArrayAdapter);
 		
-		//get the local bluetooth adapter
-		mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-		
-		//Try to enable bluetooth
-		if (mBluetoothAdapter == null) {
-			// Device does not support Bluetooth TODO handle
-		}else{
-			if (!mBluetoothAdapter.isEnabled()) {
-			    Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-			    startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
-			}
-		}
+
 		
 		//allow us to be discovered by other devices
 		Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
@@ -138,7 +141,9 @@ public class Bluetooth extends Activity{
         }
 
         // Request discover from BluetoothAdapter
+        mArrayAdapter.clear();
         mBluetoothAdapter.startDiscovery();
+        queryPairedDevices();
 	}
 	
 	
@@ -223,11 +228,12 @@ public class Bluetooth extends Activity{
     };
     
     private  OnClickListener finishButtonListener = new OnClickListener(){
+		private String Tag = "Bluetooth.finishButtonListener";
+
 
 		@Override
 		public void onClick(View v) {
-            // Cancel discovery because it's costly and we're about to connect
-            mBluetoothAdapter.cancelDiscovery();
+
             // Set result and finish this Activity
             
             //get all the selected bluetooth devices and add them to return intent
@@ -235,19 +241,50 @@ public class Bluetooth extends Activity{
             	finishAndCall.putExtra(AccessGlobal.returnedDevices
             			, mBluetoothAdapter.getRemoteDevice(i));
             }
+            if(!selected.isEmpty()){
+	            if(mBluetoothAdapter.getRemoteDevice(selected.get(0)) != null){
 
-            //set our result and return
-            setResult(Activity.RESULT_OK, finishAndCall);
-            finish();
+	            	// Cancel discovery because it's costly and we're about to connect
+	            	mBluetoothAdapter.cancelDiscovery();
+		            Log.i(Tag, "canceled discovery");
+	            	Thread t = new Thread(new Runnable(){
+						private BluetoothDevice mBluetoothDevice;
+						@Override
+						public void run() {
+				            Log.i(Tag, "made it into run");
+							//attempt to connect to this socket... blocking call
+							mBluetoothDevice = mBluetoothAdapter.getRemoteDevice(selected.get(0));
+							try {
+								BluetoothSocket mSocket =  mBluetoothDevice
+										.createRfcommSocketToServiceRecord(AccessGlobal.mUUID);
+								mSocket.connect();
+					            //set our result and return
+					            setResult(Activity.RESULT_OK, finishAndCall);
+					            finish();
+					            Log.i(Tag, "created socket and connected to a client!");
+					            AccessGlobal.setSocket(mSocket);
+							} catch (IOException e) {
+								Log.e(Tag, "either couldn't create bluetooth socket or couldnt"
+										+ " connect to it");
+								e.printStackTrace();
+							}
+						}
+	            		
+	            	});
+	            	t.start();
+
+	            }
+            }
 		}
     };
     
     /*
      * -------------------------------------------------------------------------------------------------------
-     * Thread that will handle other devices requestion connections
+     * Thread that will handle other devices request connections
      * -------------------------------------------------------------------------------------------------------
      */
     private Runnable makeRunnable(final Context c){
+		String Tag = "Bluetooth.makeRunnable";
     	return new Runnable(){
 
 
@@ -259,8 +296,9 @@ public class Bluetooth extends Activity{
     	    private void constructor(){
     	    	BluetoothServerSocket tmp = null;
     	    	try {
-    				tmp = mBluetoothAdapter.listenUsingRfcommWithServiceRecord(socketString,AccessGlobal
-    						.mUUID);
+    	    		AccessGlobal.create();
+    	    		tmp = mBluetoothAdapter.listenUsingRfcommWithServiceRecord(socketString, AccessGlobal
+    	    					.mUUID);
     				
     			} catch (IOException e) {
     				e.printStackTrace();
