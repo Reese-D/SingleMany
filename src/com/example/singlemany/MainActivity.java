@@ -391,15 +391,15 @@ public class MainActivity extends Activity {
 	 */
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		if(myPlayerNumber == currentPlayerNumber)
+		if(myPlayerNumber == currentPlayerNumber && event.getAction() == MotionEvent.ACTION_DOWN)
 			touch(event);
 		return super.onTouchEvent(event);
 	}
 	
 	public void touch(MotionEvent event){
 		//get the x and y of the touch (absolute not relative)
-				float x = event.getRawX();
-				float y = event.getRawY();
+				float x = event.getX()*event.getXPrecision();
+				float y = event.getRawY()*event.getYPrecision();
 				event.getXPrecision();
 				Square temp = currentlySelectedSquare;
 				
