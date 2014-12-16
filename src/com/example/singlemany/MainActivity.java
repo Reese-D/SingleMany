@@ -407,7 +407,8 @@ public class MainActivity extends Activity {
 				for(Square element :squares){
 					if(gameBoard == null)
 						Log.e(Tag, "Gameboard was null in touch event!");
-					if(gameBoard != null && element.getRectF().contains(x/gameBoard.getWidth(), y/gameBoard.getHeight())){
+					if(gameBoard != null && element.getRectF().contains(x/gameBoard.getWidth()
+												, y/gameBoard.getHeight())){
 						currentlySelectedSquare = element;
 						setText("selected square: " + (element.name));
 						
