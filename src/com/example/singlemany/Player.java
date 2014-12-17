@@ -126,7 +126,7 @@ public class Player {
 	public void buyProperty(BasicSquare property)
 	{
 		Log.i(Tag , "attempted to purchase property");
-		if(property.getHasOwner() == false && this.money >= property.getPurchasePrice() && property == this.getPosition())
+		if(property.getHasOwner() == false && this.money >= property.getPurchasePrice() && c.currentSquare.equals(c.currentlySelectedSquare) == true)
 		{
 			Log.i(Tag , "Purchased property, money was: " + money);
 			payMoney(property.getPurchasePrice());
@@ -134,7 +134,7 @@ public class Player {
 			property.setOwner(this);
 			properties.add(property);
 		}
-		if(property != this.getPosition())
+		if(c.currentSquare.equals(c.currentlySelectedSquare) == false)
 		{
 			c.makeToast("You can purchase ownership for land only if you are landed on it", true);
 		}
