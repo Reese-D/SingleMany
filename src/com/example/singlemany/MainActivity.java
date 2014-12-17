@@ -73,7 +73,7 @@ public class MainActivity extends Activity {
 	public int currentPlayerNumber;
 	
 	Intent mIntent;
-	volatile Square currentSquare;
+	public volatile Square currentSquare;
 	Connection myConnection;
 
 	private BluetoothSocket mBluetoothSocket;
@@ -365,7 +365,6 @@ public class MainActivity extends Activity {
 				currentPosition = currentPlayer.getPositionInBoard();
 				currentSquare = squares.get(currentPosition);
 				Log.i(Tag, "currentSquare is: " + currentSquare);
-
 				//animate image view
 				currentPlayer.getImageView().animate().translationX(currentSquare.getX() - (imageWidth/2));
 				currentPlayer.getImageView().animate().translationY(currentSquare.getY() - (imageHeight/2));
