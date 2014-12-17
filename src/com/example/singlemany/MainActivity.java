@@ -291,7 +291,7 @@ public class MainActivity extends Activity {
     
     
     
-    @Override
+    /*@Override
 	protected void onStop() {
 		super.onPause();
 		((Board) gameBoard).killThread();
@@ -309,7 +309,7 @@ public class MainActivity extends Activity {
 			((Board) gameBoard).setupBoard(players, squares);
 			killed = false;
 		}
-	}
+	}*/
 
 	public void doRestart(Context c) {
         try {
