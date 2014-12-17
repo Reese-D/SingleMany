@@ -388,6 +388,7 @@ public class MainActivity extends Activity {
 					currentSquare.duAction(currentPlayer);
 				}
 				endTurn.setOnClickListener(setEndTurnButtonListener());
+				currentPlayer.setPosition(currentSquare);
 				updateGold();
 			}
 		};
@@ -448,6 +449,7 @@ public class MainActivity extends Activity {
 					endTurn.setOnClickListener(null);
 				}
 				endTurn.setOnClickListener(setEndTurnButtonListener());
+				currentPlayer.setPosition(currentSquare);
 				updateGold();
 			}
 		};
