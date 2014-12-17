@@ -125,7 +125,7 @@ public class BasicSquare extends Square{
 		{
 			double rent = this.getBaseRent();
 			owner.addMoney(rent);
-			c.makeToast("You need to pay rent for the owner of this property", true);
+			c.makeToast("You need to pay rent for the owner of this property", false);
 			player.payMoney(rent);
 		}
 		
