@@ -35,7 +35,7 @@ public class Player {
 		image = null;
 		amountOfPlayers++;
 		Id = amountOfPlayers;
-		money = 2000;
+		money = 1000;
 		hasThrownDice = false;
 		positionInBoard = 0;
 		movingToPosition = 0;
@@ -51,6 +51,8 @@ public class Player {
 		
 		//position = 0; //TODO position is square type, change this
 	}
+
+	
 	public boolean getIsInJail()
 	{
 		return isInJail;
@@ -124,13 +126,17 @@ public class Player {
 	public void buyProperty(BasicSquare property)
 	{
 		Log.i(Tag , "attempted to purchase property");
-		if(property.getHasOwner() == false && this.money >= property.getPurchasePrice())
+		if(property.getHasOwner() == false && this.money >= property.getPurchasePrice() && property == this.getPosition())
 		{
 			Log.i(Tag , "Purchased property, money was: " + money);
 			payMoney(property.getPurchasePrice());
 			Log.i(Tag , "money is now: " + money);
 			property.setOwner(this);
 			properties.add(property);
+		}
+		if(property != this.getPosition())
+		{
+			c.makeToast("You can purchase ownership for land only if you are landed on it", true);
 		}
 	}
 	public void buyHouse(BasicSquare property)
