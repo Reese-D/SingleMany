@@ -89,6 +89,8 @@ public class MainActivity extends Activity {
 	private TextView information4;
 
 	private TextView information5;
+
+	private boolean killed = false;
 	
     protected void onCreate(Bundle savedInstanceState) {
         myView = getLayoutInflater().inflate(R.layout.activity_main, null);
@@ -288,7 +290,28 @@ public class MainActivity extends Activity {
     }
     
     
-    public void doRestart(Context c) {
+    
+    @Override
+	protected void onStop() {
+		super.onPause();
+		((Board) gameBoard).killThread();
+		killed  = true;
+	}
+    
+    
+
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		if(gameBoard != null && killed){
+			((Board) gameBoard).restartThread();
+			((Board) gameBoard).setupBoard(players, squares);
+			killed = false;
+		}
+	}
+
+	public void doRestart(Context c) {
         try {
             //check if the context is given
             if (c != null) {

@@ -103,16 +103,25 @@ public class Board extends SurfaceView implements SurfaceHolder.Callback {
 	@Override
 	public void surfaceDestroyed(SurfaceHolder holder) {
 		boolean retry = true;
-		thread.setRunning(false);
-		while (retry) {
-			try {
-				//if the surface dies kill the thread
-				thread.join();
-				retry = false;
-			}catch(InterruptedException e){
-				//do nothing
+		if(thread != null){
+			thread.setRunning(false);
+			while (retry) {
+				try {
+					//if the surface dies kill the thread
+					thread.join();
+					retry = false;
+				}catch(InterruptedException e){
+					//do nothing
+				}
 			}
 		}
+	}
+	public void killThread(){
+		thread.setRunning(false);
+	}
+	
+	public void restartThread(){
+		thread.setRunning(true);
 	}
 	
 	public int getSquareHeight(){

@@ -69,6 +69,8 @@ public class mThread extends Thread{
 
 	}
 	
+
+	
 	/**
 	 * @param t text size for square names
 	 */
@@ -135,6 +137,8 @@ public class mThread extends Thread{
 	 */
 	private void doDraw(Canvas c){
 
+		if (c == null)
+			return;
 		c.drawColor(Color.BLACK);
 		for(Square element : drawnSquares){
 			

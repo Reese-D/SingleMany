@@ -111,13 +111,13 @@ public class Player {
 	public void payMoney(double amount)
 	{
 		money = money - amount;
-		c.makeToast(("Paid " + amount), true);
+		c.makeToast(("Paid " + amount), false);
 	}
 	
 	public int throwDice()
 	{
 		int diceValue1 = (int )(Math.random() * 6 + 1);
-		c.makeToast(("Throwed value" + diceValue1), true);
+		c.makeToast(("Throwed value" + diceValue1), false);
 		return diceValue1;
 		
 	}
@@ -139,7 +139,7 @@ public class Player {
 		{
 			payMoney(property.getHousePrice());
 			property.buildHouse();
-			c.makeToast("You bought a house on selected property", true);
+			c.makeToast("You bought a house on selected property", false);
 		}
 	}
 	public void buyHotel(BasicSquare property)
@@ -148,7 +148,7 @@ public class Player {
 		{
 			payMoney(property.getHotelPrice());
 			property.buildHotel();
-			c.makeToast("You bought a hotel on selected property", true);
+			c.makeToast("You bought a hotel on selected property", false);
 		}
 	}
 	public int getId()
