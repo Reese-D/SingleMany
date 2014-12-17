@@ -211,7 +211,7 @@ playerArray[1].setPostion(boardArray[0]);*/
 	{
 
 		currentPlayer.setHasThrownDice(false);
-		if(currentPlayer.getIsInJail() == true && currentPlayer.getTimeInJail() == 2)
+		if(currentPlayer.getIsInJail() == true && currentPlayer.getTimeInJail() >= 2)
 		{
 			currentPlayer.setIsInJail(false);
 			currentPlayer.setTimeInJail(0);
