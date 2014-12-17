@@ -216,7 +216,7 @@ playerArray[1].setPostion(boardArray[0]);*/
 			currentPlayer.setIsInJail(false);
 			currentPlayer.setTimeInJail(0);
 		}
-		else
+		else if(currentPlayer.getIsInJail() == true)
 		{
 			currentPlayer.increaseTimeInJail();
 		}
